@@ -1,5 +1,5 @@
 // export const API_URL = 'http://essntls.jetbrackets.com'
-export const API_URL = 'https://essntls.jetbrackets.com/'
+export const API_URL = 'https://essntls.jetbrackets.com'
 
 export const TOKEN_POST = (body) => {
   return {
