@@ -6,7 +6,6 @@ import { ReactComponent as ArrowDow } from '../../assets/icons/arrow-down.svg'
 
 const FormDeliveryOptions = () => {
   const [activeDropDown, setActiveDropDown] = useState(false)
-  const [selected, setSelected] = useState(false)
 
   function handleSelected({ target }) {
     console.log(target.classList.add('ok'))
