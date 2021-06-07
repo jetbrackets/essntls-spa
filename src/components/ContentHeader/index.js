@@ -1,9 +1,9 @@
 import * as S from './style'
 
-const ContentHeader = ({ children }) => {
+const ContentHeader = ({ children, title }) => {
   return (
     <S.Container>
-      <S.Title>Dashboard</S.Title>
+      <S.Title>{title}</S.Title>
       {children}
     </S.Container>
   )
