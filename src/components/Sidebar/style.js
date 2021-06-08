@@ -5,9 +5,8 @@ export const Container = styled.div`
   top: 0px;
   left: 0px;
   background: #1e2a36;
-  width: 18.375rem;
+  width: 14.375rem;
   height: 100%;
-  /* z-index: -100; */
 
   > div {
     margin-top: calc(4.875rem + 2rem);

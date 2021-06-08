@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   margin-top: 4.875rem;
-  margin-left: 18.375rem;
+  margin-left: 14.375rem;
   padding: 1.25rem 2.5rem;
-  width: calc(100% - 18.375rem);
+  width: calc(100% - 14.375rem);
 `
 
 export const Description = styled.div``

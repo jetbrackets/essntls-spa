@@ -1,6 +1,7 @@
 import ContentHeader from '../../components/ContentHeader'
 import Content from '../../components/Content/index'
 import PartialsDashboard from '../../components/PartialsDashbord'
+import DashbordComponent from '../../components/Dashboard/index'
 
 const Dashboard = () => {
   return (
@@ -8,7 +9,7 @@ const Dashboard = () => {
       <PartialsDashboard />
       <Content>
         <ContentHeader title="Dashboard" />
-        Dashboard ok!
+        <DashbordComponent />
       </Content>
     </>
   )
