@@ -20,12 +20,23 @@ const GlobalStyles = createGlobalStyle`
   }
 
   a {
-    text-decoration: none
+    text-decoration: none;
+    color: var(--text-color);
+  }
+
+  p, span, button{
+    padding: 0px;
+    margin: 0px;
+    letter-spacing: normal;
   }
 
   img {
     display: block;
     max-width: 100%;
+  }
+
+  ul, ol{
+    padding: 0;
   }
 
   button{
