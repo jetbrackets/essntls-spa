@@ -2,7 +2,7 @@ import * as S from './style'
 
 const ServiceProviderDetails = ({
   image,
-  username,
+  name,
   numberDeliveries,
   inDashboard
 }) => {
@@ -12,7 +12,7 @@ const ServiceProviderDetails = ({
         <img src={image} alt="" />
       </div>
       <S.Info>
-        <p>{username}</p>
+        <p>{name}</p>
         <div>
           <svg width="10" height="9">
             <path

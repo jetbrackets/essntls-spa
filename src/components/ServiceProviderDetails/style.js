@@ -19,6 +19,10 @@ export const Wrapper = styled.a`
 export const Info = styled.div`
   margin-left: 8px;
 
+  > p {
+    margin: 0px;
+  }
+
   span {
     font-size: 12px;
     color: #969696;

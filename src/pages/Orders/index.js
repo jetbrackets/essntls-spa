@@ -3,6 +3,7 @@ import Content from '../../components/Content/index'
 import FormDeliveryOptions from '../../components/FormDeliveryOptions'
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
+import OrderComponent from '../../components/Orders'
 
 const Orders = () => {
   return (
@@ -13,7 +14,7 @@ const Orders = () => {
         <ContentHeader title="Orders">
           <FormDeliveryOptions />
         </ContentHeader>
-        Orders ok!
+        <OrderComponent />
       </Content>
     </>
   )
