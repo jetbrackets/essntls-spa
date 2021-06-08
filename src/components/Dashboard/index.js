@@ -56,25 +56,25 @@ const DashbordComponent = () => {
           <S.ActiveList>
             <div>
               <ServiceProviderDetails
-                username="Mark"
+                name="Mark"
                 numberDeliveries={10}
                 image={Image}
                 inDashboard={true}
               />
               <ServiceProviderDetails
-                username="Mark"
+                name="Mark"
                 numberDeliveries={10}
                 image={Image}
                 inDashboard={true}
               />
               <ServiceProviderDetails
-                username="Mark"
+                name="Mark"
                 numberDeliveries={10}
                 image={Image}
                 inDashboard={true}
               />
               <ServiceProviderDetails
-                username="Mark"
+                name="Mark"
                 numberDeliveries={10}
                 image={Image}
                 inDashboard={true}

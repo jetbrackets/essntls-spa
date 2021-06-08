@@ -71,7 +71,7 @@ const WrapperdMap = ({ mapContainerStyle }) => {
                 <S.UserContainer>
                   <ServiceProviderDetails
                     image={Image}
-                    username="Mark"
+                    name="Mark"
                     numberDeliveries="1000"
                   />
                   <S.Button />
@@ -118,7 +118,7 @@ const WrapperdMap = ({ mapContainerStyle }) => {
                   <S.UserContainer>
                     <CustomerDetails
                       Image={Image}
-                      username="Avillar"
+                      name="Avillar"
                       numberOrders="200"
                     />
                     <S.Button />
