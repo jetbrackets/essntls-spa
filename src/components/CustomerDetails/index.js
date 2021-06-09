@@ -1,12 +1,12 @@
 import * as S from './style'
 
-const CustomerDetails = ({ Image, name, numberOrders }) => {
+const CustomerDetails = ({ Image, name, numberOrders, isVisible }) => {
   return (
     <S.Wrapper>
       <div>
         <img src={Image} alt="" />
       </div>
-      <S.Info>
+      <S.Info isVisible={isVisible}>
         <p>{name}</p>
         <span>{numberOrders} Orders</span>
       </S.Info>

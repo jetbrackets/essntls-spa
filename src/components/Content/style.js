@@ -1,10 +1,21 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const animation = keyframes`
+  to {
+    opacity: 1;
+    transform: initial;
+  }
+`
 
 export const Container = styled.div`
   margin-top: 4.875rem;
   margin-left: 14.375rem;
   padding: 1.25rem 2.5rem;
   width: calc(100% - 14.375rem);
+
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: ${animation} 0.5s forwards;
 `
 
 export const Description = styled.div``

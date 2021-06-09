@@ -120,6 +120,7 @@ const WrapperdMap = ({ mapContainerStyle }) => {
                       Image={Image}
                       name="Avillar"
                       numberOrders="200"
+                      isVisible={true}
                     />
                     <S.Button />
                   </S.UserContainer>
