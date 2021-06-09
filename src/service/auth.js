@@ -1,9 +1,9 @@
 // export const API_URL = 'http://essntls.jetbrackets.com'
-export const API_URL = 'https://essntls.jetbrackets.com'
+export const API_URL = 'https://essntls.jetbrackets.com/api'
 
 export const TOKEN_POST = (body) => {
   return {
-    url: API_URL + '/login',
+    url: API_URL + '/admin/v1/login',
     options: {
       method: 'POST',
       headers: {

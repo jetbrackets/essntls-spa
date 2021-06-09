@@ -40,6 +40,7 @@ export const UserStorage = ({ children }) => {
       navigate('/dashboard')
     } catch (err) {
       setError(err.message)
+      setLogin(false)
     }
   }
 
@@ -49,10 +50,14 @@ export const UserStorage = ({ children }) => {
 
       if (token) {
         try {
+          setError(null)
+
           setLogin(true)
         } catch (error) {
           userLogout()
         }
+      } else {
+        setLogin(false)
       }
     }
     automaticLogin()
