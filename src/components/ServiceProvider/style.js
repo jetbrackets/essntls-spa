@@ -10,10 +10,6 @@ export const Container = styled.div`
   > div {
     display: flex;
     margin-bottom: 1rem;
-
-    button {
-      margin-left: auto;
-    }
   }
 
   .tabPane {
@@ -33,6 +29,21 @@ export const BlockButton = styled.button`
   background: #fff;
   text-transform: uppercase;
   font-weight: bold;
+  margin-left: 1rem;
+
+  > svg {
+    margin-right: 8px;
+  }
+`
+
+export const ApproveButton = styled.button`
+  border: 1px solid #269e97;
+  padding: 0.5rem 1rem;
+  color: #269e97;
+  background: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-left: auto;
 
   > svg {
     margin-right: 8px;
@@ -55,7 +66,7 @@ export const Button = styled.button`
   }
 `
 
-export const CustomerProfile = styled.div`
+export const ServiceProviderProfile = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 4rem;
