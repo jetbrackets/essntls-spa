@@ -2,7 +2,7 @@ import { createContext, useState, useCallback, useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { TOKEN_POST } from '../service/auth'
+import { TOKEN_POST } from '../service/api'
 
 export const UserContext = createContext()
 
@@ -36,7 +36,6 @@ export const UserStorage = ({ children }) => {
       window.localStorage.setItem('token', json.token)
 
       setLogin(true)
-
       navigate('/dashboard')
     } catch (err) {
       setError(err.message)
