@@ -1,6 +1,6 @@
 import * as S from './style'
 
-const DestinationDetails = () => {
+const DestinationDetails = ({ adress }) => {
   return (
     <>
       <div>
@@ -11,7 +11,7 @@ const DestinationDetails = () => {
               <circle cx="8.5" cy="8.5" r="4" fill="#33A753" stroke="#33A753" />
             </svg>
           </span>
-          <p>Little Tokyo, Los Angeles, CA 90012, USA</p>
+          <p>{adress && adress.departure_address}</p>
         </S.CircleContainer>
         <S.CircleContainer>
           <span>
@@ -21,7 +21,7 @@ const DestinationDetails = () => {
             </svg>
           </span>
 
-          <p>Westlake, Los Angeles, CA 90057, USA</p>
+          <p>{adress && adress.delivery_address}</p>
         </S.CircleContainer>
       </div>
     </>

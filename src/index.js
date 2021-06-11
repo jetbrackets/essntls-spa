@@ -5,9 +5,9 @@ import GlobalStyles from './styles/global'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <App />
     <GlobalStyles />
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById('root')
 )

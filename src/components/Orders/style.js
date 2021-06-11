@@ -71,4 +71,9 @@ export const ItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 0 1rem;
+
+  table {
+    align-self: flex-start;
+  }
 `

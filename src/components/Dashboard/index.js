@@ -1,15 +1,45 @@
+import { useEffect, useState } from 'react'
+
 import * as S from './style'
 
 import ServiceProviderDetails from '../ServiceProviderDetails'
 
 import Image from '../../assets/images/customers-image.png'
 import WrapperdMap from '../Map'
+import { ACTIVE_DRIVERS } from '../../service/api'
 
 const DashbordComponent = () => {
+  const [driver, setDriver] = useState(null)
   const mapContainerStyle = {
     height: '500px',
     maxWidth: '995px'
   }
+
+  useEffect(() => {
+    let clear = false
+    const getActiveDrives = async () => {
+      try {
+        if (!clear) {
+          const token = window.localStorage.getItem('token')
+
+          const { url, options } = ACTIVE_DRIVERS(token)
+          const response = await fetch(url, options)
+          const json = await response.json()
+
+          setDriver(json)
+        }
+      } catch (error) {
+        if (!clear) {
+          throw error
+        }
+      }
+    }
+
+    getActiveDrives()
+    return () => {
+      clear = true
+    }
+  }, [])
 
   return (
     <>
@@ -55,30 +85,16 @@ const DashbordComponent = () => {
           </div>
           <S.ActiveList>
             <div>
-              <ServiceProviderDetails
-                name="Mark"
-                numberDeliveries={10}
-                image={Image}
-                inDashboard={true}
-              />
-              <ServiceProviderDetails
-                name="Mark"
-                numberDeliveries={10}
-                image={Image}
-                inDashboard={true}
-              />
-              <ServiceProviderDetails
-                name="Mark"
-                numberDeliveries={10}
-                image={Image}
-                inDashboard={true}
-              />
-              <ServiceProviderDetails
-                name="Mark"
-                numberDeliveries={10}
-                image={Image}
-                inDashboard={true}
-              />
+              {driver &&
+                driver.map(({ name, id }) => (
+                  <ServiceProviderDetails
+                    key={id}
+                    name={name}
+                    numberDeliveries={10}
+                    image={Image}
+                    inDashboard={true}
+                  />
+                ))}
             </div>
           </S.ActiveList>
         </S.ActiveContainer>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Table, Collapse, Progress } from 'reactstrap'
 
 import * as S from './style'
@@ -10,9 +10,11 @@ import WrapperdMap from '../Map'
 import Label from '../Label/Label'
 import TableItems from '../TableItems'
 
+import { ORDERS } from '../../service/api'
+
 import Image from '../../assets/images/customers-image.png'
 
-const OrderDetails = () => {
+const OrderDetails = ({ order }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
@@ -29,6 +31,7 @@ const OrderDetails = () => {
         style={{
           background: `${isOpen === true ? '#fff' : '#fff'}`,
           borderBottom: '1px solid #CFCFCF',
+          borderTop: '1px solid #CFCFCF',
           cursor: 'pointer'
         }}
       >
@@ -36,27 +39,31 @@ const OrderDetails = () => {
           <Progress value={50} color="success" />
         </S.Td>
         <td className="align-middle text-center" style={{ color: '#969696' }}>
-          #34834
+          #{order.id}
         </td>
         <td className="align-middle text-center">
           <div>
-            <p style={{ margin: '0' }}>16:05 p.m</p>
+            <p style={{ margin: '0' }}>{order.accepted_in}</p>
             <small style={{ color: '#969696' }}>02/23/2021</small>
           </div>
         </td>
         <td className="align-middle text-center">
           <div>
-            <p style={{ margin: '0' }}>16:05 p.m</p>
+            <p style={{ margin: '0' }}>{order.arrival_in}</p>
             <small style={{ color: '#969696' }}>02/23/2021</small>
           </div>
         </td>
-        <td className="align-middle text-center">$30</td>
+        <td className="align-middle text-center">$ {order.amount}</td>
         <td className="col-md-2 align-middle">
-          <CustomerDetails Image={Image} numberOrders="10" name="Mark" />
+          <CustomerDetails
+            Image={Image}
+            numberOrders="10"
+            name={order.customer.name}
+          />
         </td>
         <td className="col-md-3 align-middle">
           <ServiceProviderDetails
-            name="Mark"
+            name={order.driver.name}
             numberDeliveries={10}
             image={Image}
             inDashboard={false}
@@ -107,7 +114,7 @@ const OrderDetails = () => {
 
                 <S.Location>
                   <section>
-                    <DestinationDetails />
+                    <DestinationDetails adress={order} />
                   </section>
 
                   <div>
@@ -115,19 +122,19 @@ const OrderDetails = () => {
                     <table className="table table-borderless">
                       <tr>
                         Requested in:
-                        <td>16 p.m</td>
+                        <td>{order.accepted_in}</td>
                       </tr>
                       <tr>
                         Acepted in:
-                        <td>16:05 p.m</td>
+                        <td>{order.accepted_in}</td>
                       </tr>
                       <tr>
                         Arrival in:
-                        <td>16:25 p.m</td>
+                        <td>{order.arrival_in}</td>
                       </tr>
                       <tr>
                         Delivery time:
-                        <td>20m</td>
+                        <td>{order.delivery_time}</td>
                       </tr>
                     </table>
                   </div>
@@ -136,67 +143,36 @@ const OrderDetails = () => {
             </div>
             <S.ItemsContainer>
               <p>Items</p>
-              <TableItems customHeight="200px">
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-              </TableItems>
+              <div>
+                <TableItems customHeight="200px">
+                  {order.items.map((item) => (
+                    <tr>
+                      <td>Ibuprofen 200mg</td>
+                      <td>{item.qty}</td>
+                      <td>{item.value}</td>
+                      <td>{item.qty * item.value}</td>
+                    </tr>
+                  ))}
+                </TableItems>
+              </div>
               <div>
                 <Label>Invoice Details ($)</Label>
                 <table className="table table-borderless">
                   <tr>
-                    Requested in:
+                    Items:
                     <td>16 p.m</td>
                   </tr>
                   <tr>
-                    Acepted in:
-                    <td>16:05 p.m</td>
+                    Shipping:
+                    <td>{order.shipping}</td>
                   </tr>
                   <tr>
-                    Arrival in:
-                    <td>16:25 p.m</td>
+                    Provider’s Commission:
+                    <td>{order.commission}</td>
                   </tr>
                   <tr>
-                    Delivery time:
-                    <td>20m</td>
+                    Essntl’s Profit:
+                    <td>{order.profit}</td>
                   </tr>
                 </table>
               </div>
@@ -209,6 +185,34 @@ const OrderDetails = () => {
 }
 
 const OrderComponent = () => {
+  const [orders, setOrders] = useState(false)
+
+  useEffect(() => {
+    let clear = false
+    const getActiveDrives = async () => {
+      try {
+        if (!clear) {
+          const token = window.localStorage.getItem('token')
+
+          const { url, options } = ORDERS(token)
+          const response = await fetch(url, options)
+          const json = await response.json()
+
+          setOrders(json)
+        }
+      } catch (error) {
+        if (!clear) {
+          throw error
+        }
+      }
+    }
+
+    getActiveDrives()
+    return () => {
+      clear = true
+    }
+  }, [])
+
   return (
     <>
       <Table borderless responsive>
@@ -232,8 +236,10 @@ const OrderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          <OrderDetails />
-          <OrderDetails />
+          {orders &&
+            orders.map((order) => (
+              <OrderDetails key={order.id} order={order} />
+            ))}
         </tbody>
       </Table>
     </>

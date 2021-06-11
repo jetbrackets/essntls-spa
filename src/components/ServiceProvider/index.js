@@ -149,6 +149,16 @@ const ServiceProviderInfo = () => {
                   <Col sm="6">Content here</Col>
                 </Row>
               </TabPane>
+              <TabPane tabId="5" className="tabPane">
+                <Row>
+                  <Col sm="4">
+                    <p>Overview</p>
+                  </Col>
+                  <Col sm="8">
+                    <p>Reviews</p>
+                  </Col>
+                </Row>
+              </TabPane>
             </TabContent>
           </S.Container>
         </td>
