@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes } from 'react-router-dom'
 
 import Login from '../../pages/Login/'
 import Orders from '../../pages/Orders'
@@ -10,12 +10,13 @@ import Customers from '../../pages/Customers'
 import ServiceProviders from '../../pages/ServiceProviders'
 
 import ProtectedRoute from '../../helpers/ProtectedRoute'
+import CustomRoute from '../../helpers/CustomRoutes'
 
 const DashboardRoutes = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <CustomRoute path="/" element={<Login />} />
 
         <ProtectedRoute path="dashboard" element={<Dashboard />} />
         <ProtectedRoute path="orders" element={<Orders />} />
