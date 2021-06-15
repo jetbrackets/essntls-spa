@@ -61,3 +61,15 @@ export const GET_CUSTOMERS = (token) => {
     }
   }
 }
+
+export const GET_DRIVERS = (token) => {
+  return {
+    url: API_URL + '/admin/v1/drivers',
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}

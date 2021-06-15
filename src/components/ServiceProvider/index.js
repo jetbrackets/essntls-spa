@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Table, Collapse, Nav, TabContent, TabPane, Row, Col } from 'reactstrap'
 
 import * as S from './style'
@@ -11,14 +11,27 @@ import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
 import { ReactComponent as ApproveButtonIcon } from '../../assets/icons/checkmark.svg'
 
 import ServiceProviderDetails from '../ServiceProviderDetails/index'
+import { GET_DRIVERS } from '../../service/api'
 
-const ServiceProviderInfo = () => {
+const ServiceProviderInfo = ({ driver }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('1')
 
   const toggle = () => setIsOpen(!isOpen)
   const tabs = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)
+  }
+
+  let driverAddress
+  if (driver.address) {
+    const { address } = driver.address
+    driverAddress = address
+  }
+
+  let paymentMethod = []
+  if (driver.payment_method) {
+    const { name, type, number } = driver.payment_method
+    paymentMethod.push(name, type, number)
   }
 
   return (
@@ -32,10 +45,10 @@ const ServiceProviderInfo = () => {
         }}
       >
         <td className="align-middle">
-          <ServiceProviderDetails image={Image} name="Douglas" />
+          <ServiceProviderDetails image={Image} name={driver.name} />
         </td>
-        <td className="align-middle">admin@admin.com</td>
-        <td className="align-middle">+354 98788-9865</td>
+        <td className="align-middle">{driver.email}</td>
+        <td className="align-middle">{driver.phone}</td>
         <td className="align-middle">
           <div>
             <p>02/23/2021</p>
@@ -117,26 +130,31 @@ const ServiceProviderInfo = () => {
                   <Col className="col-sm-12">
                     <S.ServiceProviderProfile>
                       <div>
-                        <Label>Service Provider</Label>
-                        <p>Douglas dos Santos</p>
-                        <p>douglassantos@gmail.com</p>
-                        <p>+354 98788-9865</p>
+                        <div>
+                          <Label>Service Provider</Label>
+                          <p>{driver.name}</p>
+                          <p>{driver.email}</p>
+                          <p>{driver.phone}</p>
+                        </div>
+                        <div>
+                          <Label>Wallet</Label>
+                        </div>
                       </div>
 
                       <div>
                         <div>
                           <Label>Shipping Address</Label>
-                          <p>
-                            1924 De la Vina St Santa Barbara <br /> California
-                            US - PC: 93105
-                          </p>
+                          <p>{driverAddress}</p>
                         </div>
 
                         <div>
                           <Label>Payment Method</Label>
-                          Credit Card <br />
-                          DOUGLAS SANTOS <br />
-                          XXXX XXXX XXXX 9823
+                          {paymentMethod &&
+                            paymentMethod.map((payment, index) => (
+                              <>
+                                <p key={index}>{payment}</p>
+                              </>
+                            ))}
                         </div>
                       </div>
                     </S.ServiceProviderProfile>
@@ -168,6 +186,33 @@ const ServiceProviderInfo = () => {
 }
 
 const ServiceProviderComponent = () => {
+  const [drivers, setDrivers] = useState(null)
+
+  useEffect(() => {
+    let clear = false
+    const getRestockOrders = async () => {
+      try {
+        if (!clear) {
+          const token = window.localStorage.getItem('token')
+
+          const { url, options } = GET_DRIVERS(token)
+          const response = await fetch(url, options)
+          const json = await response.json()
+
+          setDrivers(json)
+        }
+      } catch (error) {
+        if (!clear) {
+          throw error
+        }
+      }
+    }
+    getRestockOrders()
+    return () => {
+      clear = true
+    }
+  }, [])
+
   return (
     <>
       <Table borderless responsive>
@@ -182,8 +227,10 @@ const ServiceProviderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          <ServiceProviderInfo />
-          <ServiceProviderInfo />
+          {drivers &&
+            drivers.map((driver) => (
+              <ServiceProviderInfo key={driver.id} driver={driver} />
+            ))}
         </tbody>
       </Table>
     </>
