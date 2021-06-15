@@ -49,3 +49,15 @@ export const RESTOCK_ORDERS = (token) => {
     }
   }
 }
+
+export const GET_CUSTOMERS = (token) => {
+  return {
+    url: API_URL + '/admin/v1/customers',
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}
