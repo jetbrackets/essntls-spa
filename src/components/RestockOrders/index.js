@@ -25,6 +25,7 @@ const OrderDetails = ({ restockOrder }) => {
         style={{
           background: `${isOpen === true ? '#fff' : '#fff'}`,
           borderBottom: '1px solid #CFCFCF',
+          borderTop: '1px solid #CFCFCF',
           cursor: 'pointer'
         }}
       >
@@ -78,70 +79,40 @@ const OrderDetails = ({ restockOrder }) => {
               <div>
                 <div>
                   <Label>Order Infos</Label>
-                  <p></p>
+                  <p>{restockOrder.shipping}</p>
+                  <p>{restockOrder.amount}</p>
                 </div>
                 <div>
                   <Label>Service Provider</Label>
+                  <p>{restockOrder.driver.name}</p>
+                  <p>{restockOrder.driver.email}</p>
+                  <p>{restockOrder.driver.phone}</p>
                 </div>
                 <div>
                   <Label>Shipping Adrress</Label>
+                  <p>{restockOrder.shipping_address}</p>
                 </div>
                 <div>
                   <Label>Payment Method</Label>
+                  <p>
+                    Credit Card <br />
+                    DOUGLAS SANTOS <br />
+                    XXXX XXXX XXXX 9823
+                  </p>
                 </div>
               </div>
             </div>
             <div>
               <p>Items</p>
               <TableItems customHeight="auto">
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>{' '}
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>{' '}
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>{' '}
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>3</td>
-                  <td>$ 10,00</td>
-                  <td>$ 30,00</td>
-                </tr>
+                {restockOrder.items.map((item) => (
+                  <tr key={item.id}>
+                    <td>Ibuprofen 200mg</td>
+                    <td>{item.qty}</td>
+                    <td>$ {item.value}</td>
+                    <td>$ {item.qty * item.value}</td>
+                  </tr>
+                ))}
               </TableItems>
             </div>
           </S.Wrapper>
