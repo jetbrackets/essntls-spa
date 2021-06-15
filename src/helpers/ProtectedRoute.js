@@ -1,12 +1,11 @@
 import { useContext } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Route } from 'react-router-dom'
 import { UserContext } from '../context/userContext'
-import CustomRoute from './CustomRoutes'
 
 const ProtectedRoute = (props) => {
   const { login } = useContext(UserContext)
 
-  if (login === true) return <CustomRoute {...props} />
+  if (login === true) return <Route {...props} />
   else if (login === false) return <Navigate to="/" />
   else return null
 }
