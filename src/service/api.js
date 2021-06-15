@@ -37,3 +37,15 @@ export const ORDERS = (token) => {
     }
   }
 }
+
+export const RESTOCK_ORDERS = (token) => {
+  return {
+    url: API_URL + '/admin/v1/restock-orders',
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}

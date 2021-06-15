@@ -1,17 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Table, Collapse, Progress } from 'reactstrap'
 
 import * as S from './style'
 
 import ServiceProviderDetails from '../ServiceProviderDetails/'
+import Label from '../Label/Label'
+import TableItems from '../TableItems'
 
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as PrintIcon } from '../../assets/icons/print.svg'
 import { ReactComponent as Options } from '../../assets/icons/kebab.svg'
-import { Label } from '../Label/style'
-import TableItems from '../TableItems'
 
-const OrderDetails = () => {
+import { RESTOCK_ORDERS } from '../../service/api'
+
+const OrderDetails = ({ restockOrder }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
@@ -29,8 +31,8 @@ const OrderDetails = () => {
         <S.Td className="align-middle">
           <Progress value={50} color="success" />
         </S.Td>
-        <td className="align-middle">Requested</td>
-        <td className="align-middle text-center">#34834</td>
+        <td className="align-middle">{restockOrder.status}</td>
+        <td className="align-middle text-center">#{restockOrder.id}</td>
         <td className="align-middle text-center">
           <p>02/25/2021</p>
         </td>
@@ -39,14 +41,14 @@ const OrderDetails = () => {
         </td>
         <td className="col-md-3 align-middle">
           <ServiceProviderDetails
-            name="Mark"
+            name={restockOrder.driver.name}
             numberDeliveries={10}
             image={Image}
             inDashboard={false}
           />
         </td>
         <td className="align-middle text-center">$30</td>
-        <td className="col-md-2 align-middle">R$ 90</td>
+        <td className="col-md-2 align-middle">$ {restockOrder.amount}</td>
         <td style={{ width: '40px' }}>
           <svg width="18" height="11" fill="none">
             <path
@@ -76,6 +78,7 @@ const OrderDetails = () => {
               <div>
                 <div>
                   <Label>Order Infos</Label>
+                  <p></p>
                 </div>
                 <div>
                   <Label>Service Provider</Label>
@@ -149,6 +152,33 @@ const OrderDetails = () => {
 }
 
 const RestockOrderComponent = () => {
+  const [restockOrders, setRestockOrders] = useState(null)
+
+  useEffect(() => {
+    let clear = false
+    const getRestockOrders = async () => {
+      try {
+        if (!clear) {
+          const token = window.localStorage.getItem('token')
+
+          const { url, options } = RESTOCK_ORDERS(token)
+          const response = await fetch(url, options)
+          const json = await response.json()
+
+          setRestockOrders(json)
+        }
+      } catch (error) {
+        if (!clear) {
+          throw error
+        }
+      }
+    }
+    getRestockOrders()
+    return () => {
+      clear = true
+    }
+  }, [])
+
   return (
     <>
       <Table borderless responsive>
@@ -173,8 +203,10 @@ const RestockOrderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          <OrderDetails />
-          <OrderDetails />
+          {restockOrders &&
+            restockOrders.map((restockOrder) => (
+              <OrderDetails key={restockOrder.id} restockOrder={restockOrder} />
+            ))}
         </tbody>
       </Table>
     </>
