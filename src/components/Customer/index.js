@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Table, Collapse, Nav, TabContent, TabPane, Row, Col } from 'reactstrap'
 
 import * as S from './style'
@@ -6,10 +6,12 @@ import * as S from './style'
 import CustomerDetails from '../CustomerDetails'
 import Label from '../Label/Label'
 
+import { GET_CUSTOMERS } from '../../service/api'
+
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
 
-const CustomerInfo = () => {
+const CustomerInfo = ({ customer }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
@@ -18,6 +20,12 @@ const CustomerInfo = () => {
 
   const tabs = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)
+  }
+
+  let customerAddress
+  if (customer.address) {
+    const { address } = customer.address
+    customerAddress = address
   }
 
   return (
@@ -31,10 +39,10 @@ const CustomerInfo = () => {
         }}
       >
         <td className="align-middle">
-          <CustomerDetails Image={Image} name="Mark Avillar" />
+          <CustomerDetails Image={Image} name={customer.name} />
         </td>
-        <td className="align-middle">marckavillar@gmail.com</td>
-        <td className="align-middle">+354 98788-9865</td>
+        <td className="align-middle">{customer.email}</td>
+        <td className="align-middle">{customer.phone}</td>
         <td className="align-middle">
           <div>
             <p>02/23/2021</p>
@@ -86,24 +94,20 @@ const CustomerInfo = () => {
               </div>
             </Nav>
             <TabContent activeTab={activeTab} className="mt-4">
-              {/* <S.Width> */}
               <TabPane tabId="1" className="tabPane">
                 <Row>
                   <Col className="col-sm-12">
                     <S.CustomerProfile>
                       <div>
-                        <Label>Service Provider</Label>
-                        <p>Douglas dos Santos</p>
-                        <p>douglassantos@gmail.com</p>
-                        <p>+354 98788-9865</p>
+                        <Label>Customer</Label>
+                        <p>{customer.name}</p>
+                        <p>{customer.email}</p>
+                        <p>{customer.phone}</p>
                       </div>
                       <div>
                         <div>
-                          <Label>Shipping Address</Label>
-                          <p>
-                            1924 De la Vina St Santa Barbara <br /> California
-                            US - PC: 93105
-                          </p>
+                          <Label>Address</Label>
+                          <p>{customerAddress}</p>
                         </div>
                         <div>
                           <Label>Payment Method</Label>
@@ -116,7 +120,6 @@ const CustomerInfo = () => {
                   </Col>
                 </Row>
               </TabPane>
-              {/* </S.Width> */}
               <TabPane tabId="2" className="tabPane">
                 <Row>
                   <Col sm="6">Content here</Col>
@@ -132,6 +135,33 @@ const CustomerInfo = () => {
 }
 
 const CustomerComponent = () => {
+  const [customers, setCustomers] = useState(null)
+
+  useEffect(() => {
+    let clear = false
+    const getRestockOrders = async () => {
+      try {
+        if (!clear) {
+          const token = window.localStorage.getItem('token')
+
+          const { url, options } = GET_CUSTOMERS(token)
+          const response = await fetch(url, options)
+          const json = await response.json()
+
+          setCustomers(json)
+        }
+      } catch (error) {
+        if (!clear) {
+          throw error
+        }
+      }
+    }
+    getRestockOrders()
+    return () => {
+      clear = true
+    }
+  }, [])
+
   return (
     <>
       <Table borderless responsive>
@@ -145,8 +175,10 @@ const CustomerComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          <CustomerInfo />
-          <CustomerInfo />
+          {customers &&
+            customers.map((customer) => (
+              <CustomerInfo key={customer.id} customer={customer} />
+            ))}
         </tbody>
       </Table>
     </>
