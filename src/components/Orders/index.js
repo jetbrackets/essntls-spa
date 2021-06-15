@@ -120,22 +120,24 @@ const OrderDetails = ({ order }) => {
                   <div>
                     <Label>Time History</Label>
                     <table className="table table-borderless">
-                      <tr>
-                        Requested in:
-                        <td>{order.accepted_in}</td>
-                      </tr>
-                      <tr>
-                        Acepted in:
-                        <td>{order.accepted_in}</td>
-                      </tr>
-                      <tr>
-                        Arrival in:
-                        <td>{order.arrival_in}</td>
-                      </tr>
-                      <tr>
-                        Delivery time:
-                        <td>{order.delivery_time}</td>
-                      </tr>
+                      <tbody>
+                        <tr>
+                          Requested in:
+                          <td>{order.accepted_in}</td>
+                        </tr>
+                        <tr>
+                          Acepted in:
+                          <td>{order.accepted_in}</td>
+                        </tr>
+                        <tr>
+                          Arrival in:
+                          <td>{order.arrival_in}</td>
+                        </tr>
+                        <tr>
+                          Delivery time:
+                          <td>{order.delivery_time}</td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                 </S.Location>
@@ -146,7 +148,7 @@ const OrderDetails = ({ order }) => {
               <div>
                 <TableItems customHeight="200px">
                   {order.items.map((item) => (
-                    <tr>
+                    <tr key={item.id}>
                       <td>Ibuprofen 200mg</td>
                       <td>{item.qty}</td>
                       <td>{item.value}</td>
@@ -158,22 +160,24 @@ const OrderDetails = ({ order }) => {
               <div>
                 <Label>Invoice Details ($)</Label>
                 <table className="table table-borderless">
-                  <tr>
-                    Items:
-                    <td>16 p.m</td>
-                  </tr>
-                  <tr>
-                    Shipping:
-                    <td>{order.shipping}</td>
-                  </tr>
-                  <tr>
-                    Provider’s Commission:
-                    <td>{order.commission}</td>
-                  </tr>
-                  <tr>
-                    Essntl’s Profit:
-                    <td>{order.profit}</td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      Items:
+                      <td>16 p.m</td>
+                    </tr>
+                    <tr>
+                      Shipping:
+                      <td>{order.shipping}</td>
+                    </tr>
+                    <tr>
+                      Provider’s Commission:
+                      <td>{order.commission}</td>
+                    </tr>
+                    <tr>
+                      Essntl’s Profit:
+                      <td>{order.profit}</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </S.ItemsContainer>
