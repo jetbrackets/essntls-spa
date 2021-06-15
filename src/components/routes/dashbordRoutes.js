@@ -25,7 +25,7 @@ const DashboardRoutes = () => {
           element={<InventoryReport />}
         />
         <ProtectedRoute path="restock-orders" element={<RestockOrders />} />
-        <ProtectedRoute path="inventory" element={<Inventory />} />
+        <ProtectedRoute path="inventory/*" element={<Inventory />} />
         <ProtectedRoute path="customers" element={<Customers />} />
         <ProtectedRoute
           path="service-providers"
