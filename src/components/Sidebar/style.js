@@ -32,6 +32,10 @@ export const Container = styled.div`
       margin-right: 8px;
     }
   }
+
+  @media (max-width: 760px) {
+    display: none;
+  }
 `
 
 export const SidebarItem = styled.div`

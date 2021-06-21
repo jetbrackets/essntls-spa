@@ -54,14 +54,14 @@ const OrderDetails = ({ order }) => {
           </div>
         </td>
         <td className="align-middle text-center">$ {order.amount}</td>
-        <td className="col-md-2 align-middle">
+        <td className="col-md-2">
           <CustomerDetails
             Image={Image}
             numberOrders="10"
             name={order.customer.name}
           />
         </td>
-        <td className="col-md-3 align-middle">
+        <td className="col-md-3">
           <ServiceProviderDetails
             name={order.driver.name}
             numberDeliveries={10}

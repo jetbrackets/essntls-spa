@@ -5,6 +5,11 @@ export const Wrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 2rem;
   margin-top: 1rem;
+
+  @media (max-width: 1000px) {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
 `
 
 export const TableRow = styled.tr`
@@ -43,6 +48,10 @@ export const PrintButton = styled.button`
 
   svg {
     margin-right: 8px;
+  }
+
+  @media (max-width: 1050px) {
+    padding: 8px;
   }
 `
 export const OptionsButton = styled.button`

@@ -17,9 +17,9 @@ const InventoryOverview = () => {
   const handleChange = () => setChecked(!checked)
 
   return (
-    <Table>
+    <>
       <S.ContainerButtons>
-        <div>
+        <S.Wrapper>
           <S.Button>
             <EditButton /> Quick Edit
           </S.Button>
@@ -32,7 +32,7 @@ const InventoryOverview = () => {
               New Product
             </Link>
           </S.Button>
-        </div>
+        </S.Wrapper>
         <S.ContainerSwtich>
           <div>
             <label>
@@ -107,7 +107,7 @@ const InventoryOverview = () => {
           </tr>
         </tbody>
       </Table>
-    </Table>
+    </>
   )
 }
 

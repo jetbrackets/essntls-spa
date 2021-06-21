@@ -15,7 +15,6 @@ const Sidebar = () => {
               Dashboard
             </NavLink>
           </S.SidebarItem>
-
           <S.SidebarItem>
             <NavLink to="/orders">Orders</NavLink>
           </S.SidebarItem>
@@ -35,6 +34,7 @@ const Sidebar = () => {
             <NavLink to="/service-providers">Service Providers</NavLink>
           </S.SidebarItem>
         </ul>
+
         <div>
           <button onClick={userLogout}>
             <svg width="24" height="24" fill="none">

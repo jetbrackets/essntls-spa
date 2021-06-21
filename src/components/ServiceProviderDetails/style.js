@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const Wrapper = styled.a`
   width: 100%;
@@ -13,6 +13,18 @@ export const Wrapper = styled.a`
 
   &:hover {
     background: ${(props) => (props.inDashboard === true ? '#eee' : 'none')};
+  }
+
+  @media (max-width: 960px) {
+    ${(props) =>
+      !props.inDashboard &&
+      css`
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        text-align: center;
+      `}
   }
 `
 
@@ -29,6 +41,30 @@ export const Info = styled.div`
     margin-left: 4px;
   }
 `
+
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+
+  > div {
+    display: flex;
+    flex-wrap: nowrap;
+    /* flex: 1; */
+  }
+
+  @media (max-width: 760px) {
+    ${(props) =>
+      !props.inDashboard &&
+      css`
+        flex-direction: column;
+      `}
+
+    div {
+      margin-top: 4px;
+    }
+  }
+`
+
 export const Status = styled.p`
   margin-top: 5px;
   font-size: 12px;

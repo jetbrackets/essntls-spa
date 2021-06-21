@@ -16,6 +16,15 @@ export const Container = styled.div`
   opacity: 0;
   transform: translateX(-20px);
   animation: ${animation} 0.5s forwards;
+
+  @media (max-width: 760px) {
+    margin-left: 0px;
+    width: 100%;
+  }
+
+  @media (max-width: 520px) {
+    padding: 1rem;
+  }
 `
 
 export const Description = styled.div``

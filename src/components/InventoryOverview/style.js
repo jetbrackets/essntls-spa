@@ -1,15 +1,4 @@
-import styled from 'styled-components'
-
-export const Wrapper = styled.div`
-  margin-top: 1.5rem;
-  padding: 1rem;
-
-  background: white;
-
-  table {
-    margin-top: 1rem;
-  }
-`
+import styled, { css } from 'styled-components'
 
 export const TableRow = styled.tr`
   font-size: 12px;
@@ -18,16 +7,44 @@ export const TableRow = styled.tr`
 `
 
 export const ContainerButtons = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-gap: 2rem;
 
   div {
-    button + button {
-      margin-left: 1rem;
+    button {
+      margin-right: 8px;
+      margin-top: 8px;
     }
   }
+
+  @media (max-width: 759px) {
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+  }
 `
+
+const customMediaButton = css`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: column;
+
+  button {
+    margin-top: 8px !important;
+  }
+`
+
+export const Wrapper = styled.div`
+  @media (max-width: 1000px) {
+    ${customMediaButton}
+  }
+
+  @media (max-width: 759px) {
+    flex-direction: row;
+  }
+`
+
 export const Button = styled.button`
   padding: 0.5rem 1.5rem;
   text-transform: uppercase;
@@ -39,6 +56,15 @@ export const Button = styled.button`
 
   svg {
     margin-right: 8px;
+  }
+
+  @media (max-width: 760px) {
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 430px) {
+    padding: 0.25rem;
+    font-size: 12px;
   }
 `
 
