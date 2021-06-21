@@ -3,7 +3,7 @@ export const API_URL = 'https://essntls.jetbrackets.com/api'
 
 export const TOKEN_POST = (body) => {
   return {
-    url: API_URL + '/admin/v1/login',
+    url: API_URL + '/v1/login',
     options: {
       method: 'POST',
       headers: {
