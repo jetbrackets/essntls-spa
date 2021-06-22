@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Table, Collapse, Nav, TabContent, TabPane, Row, Col } from 'reactstrap'
 
 import * as S from './style'
@@ -6,12 +6,12 @@ import * as S from './style'
 import CustomerDetails from '../CustomerDetails'
 import Label from '../Label/Label'
 
-import { GET_CUSTOMERS } from '../../service/api'
+import { GET_CUSTOMERS, BLOCK_USER } from '../../service/api'
 
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
 
-const CustomerInfo = ({ customer }) => {
+const CustomerInfo = ({ customer, handleBlock }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
@@ -65,12 +65,19 @@ const CustomerInfo = ({ customer }) => {
       <Collapse tag="tr" isOpen={isOpen} style={{ background: '#fff' }}>
         <td colSpan="6" style={{ borderBottom: '1px solid #969696' }}>
           <S.Container>
-            <div>
-              <S.BlockButton>
-                <BlockButtonIcon />
-                Block
-              </S.BlockButton>
-            </div>
+            <>
+              {customer.status === 'blocked' ? (
+                <></>
+              ) : (
+                <div>
+                  <S.BlockButton onClick={() => handleBlock(customer.id)}>
+                    <BlockButtonIcon />
+                    Block
+                  </S.BlockButton>
+                </div>
+              )}
+            </>
+
             <Nav tabs>
               <div>
                 <S.Button
@@ -136,6 +143,7 @@ const CustomerInfo = ({ customer }) => {
 
 const CustomerComponent = () => {
   const [customers, setCustomers] = useState(null)
+  const [statusUser, setStatusUser] = useState(false)
 
   useEffect(() => {
     let clear = false
@@ -149,6 +157,7 @@ const CustomerComponent = () => {
           const json = await response.json()
 
           setCustomers(json)
+          setStatusUser(true)
         }
       } catch (error) {
         if (!clear) {
@@ -160,6 +169,17 @@ const CustomerComponent = () => {
     return () => {
       clear = true
     }
+  }, [statusUser])
+
+  const handleBlock = useCallback(async (id) => {
+    const token = window.localStorage.getItem('token')
+
+    const { url, options } = BLOCK_USER(token, id)
+
+    const response = await fetch(url, options)
+    const json = await response.json()
+
+    setStatusUser(false)
   }, [])
 
   return (
@@ -177,7 +197,11 @@ const CustomerComponent = () => {
         <tbody>
           {customers &&
             customers.map((customer) => (
-              <CustomerInfo key={customer.id} customer={customer} />
+              <CustomerInfo
+                key={customer.id}
+                customer={customer}
+                handleBlock={handleBlock}
+              />
             ))}
         </tbody>
       </Table>
