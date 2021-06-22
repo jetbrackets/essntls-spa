@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const OrderContainer = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 2rem;
   margin-top: 1rem;
 `
@@ -46,8 +46,12 @@ export const GetRealTimeButton = styled.button`
 
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   grid-gap: 1rem;
+
+  @media (max-width: 1020px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 export const MapContainer = styled.div`
@@ -55,10 +59,9 @@ export const MapContainer = styled.div`
 `
 
 export const Location = styled.div`
-  height: 100%;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
   > section {
     margin-bottom: 2.5rem;
@@ -66,14 +69,29 @@ export const Location = styled.div`
   }
 `
 
+export const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+
+  p {
+    padding: 0 2rem 0 0;
+  }
+
+  @media (max-width: 670px) {
+    grid-template-columns: 1fr;
+  }
+`
+
 export const ItemsContainer = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0 1.4rem 0 0;
 
   table {
     align-self: flex-start;
+  }
+
+  @media (max-width: 671px) {
+    margin-top: 1rem;
   }
 `

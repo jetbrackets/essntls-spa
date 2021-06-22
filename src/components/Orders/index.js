@@ -29,7 +29,7 @@ const OrderDetails = ({ order }) => {
       <tr
         onClick={toggle}
         style={{
-          background: `${isOpen === true ? '#fff' : '#fff'}`,
+          background: `${isOpen === true ? '#F8FAFB' : '#fff'}`,
           borderBottom: '1px solid #CFCFCF',
           borderTop: '1px solid #CFCFCF',
           cursor: 'pointer'
@@ -81,7 +81,7 @@ const OrderDetails = ({ order }) => {
           </svg>
         </td>
       </tr>
-      <Collapse tag="tr" isOpen={isOpen} style={{ background: '#fff' }}>
+      <Collapse tag="tr" isOpen={isOpen} style={{ background: '#F8FAFB' }}>
         <td colSpan="8">
           <S.OrderContainer>
             <div>
@@ -113,74 +113,78 @@ const OrderDetails = ({ order }) => {
                 </div>
 
                 <S.Location>
-                  <section>
+                  <S.Wrapper>
                     <DestinationDetails adress={order} />
-                  </section>
 
-                  <div>
-                    <Label>Time History</Label>
-                    <table className="table table-borderless">
-                      <tbody>
-                        <tr>
-                          Requested in:
-                          <td>{order.accepted_in}</td>
-                        </tr>
-                        <tr>
-                          Acepted in:
-                          <td>{order.accepted_in}</td>
-                        </tr>
-                        <tr>
-                          Arrival in:
-                          <td>{order.arrival_in}</td>
-                        </tr>
-                        <tr>
-                          Delivery time:
-                          <td>{order.delivery_time}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                    <S.ItemsContainer>
+                      <p>Items</p>
+                      <div>
+                        <TableItems customHeight="200px">
+                          {order.items.map((item) => (
+                            <tr key={item.id}>
+                              <td>Ibuprofen 200mg</td>
+                              <td>{item.qty}</td>
+                              <td>{item.value}</td>
+                              <td>{item.qty * item.value}</td>
+                            </tr>
+                          ))}
+                        </TableItems>
+                      </div>
+                    </S.ItemsContainer>
+                  </S.Wrapper>
+
+                  <S.Wrapper>
+                    <div>
+                      <Label>Time History</Label>
+                      <table className="table table-borderless">
+                        <tbody>
+                          <tr>
+                            Requested in:
+                            <td>{order.accepted_in}</td>
+                          </tr>
+                          <tr>
+                            Acepted in:
+                            <td>{order.accepted_in}</td>
+                          </tr>
+                          <tr>
+                            Arrival in:
+                            <td>{order.arrival_in}</td>
+                          </tr>
+                          <tr>
+                            Delivery time:
+                            <td>{order.delivery_time}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div>
+                      <Label>Invoice Details ($)</Label>
+                      <table className="table table-borderless">
+                        <tbody>
+                          <tr>
+                            Items:
+                            <td>16 p.m</td>
+                          </tr>
+                          <tr>
+                            Shipping:
+                            <td>{order.shipping}</td>
+                          </tr>
+                          <tr>
+                            Provider’s Commission:
+                            <td>{order.commission}</td>
+                          </tr>
+                          <tr>
+                            Essntl’s Profit:
+                            <td>{order.profit}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </S.Wrapper>
                 </S.Location>
               </S.Container>
             </div>
-            <S.ItemsContainer>
-              <p>Items</p>
-              <div>
-                <TableItems customHeight="200px">
-                  {order.items.map((item) => (
-                    <tr key={item.id}>
-                      <td>Ibuprofen 200mg</td>
-                      <td>{item.qty}</td>
-                      <td>{item.value}</td>
-                      <td>{item.qty * item.value}</td>
-                    </tr>
-                  ))}
-                </TableItems>
-              </div>
-              <div>
-                <Label>Invoice Details ($)</Label>
-                <table className="table table-borderless">
-                  <tbody>
-                    <tr>
-                      Items:
-                      <td>16 p.m</td>
-                    </tr>
-                    <tr>
-                      Shipping:
-                      <td>{order.shipping}</td>
-                    </tr>
-                    <tr>
-                      Provider’s Commission:
-                      <td>{order.commission}</td>
-                    </tr>
-                    <tr>
-                      Essntl’s Profit:
-                      <td>{order.profit}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </S.ItemsContainer>
           </S.OrderContainer>
         </td>
       </Collapse>
