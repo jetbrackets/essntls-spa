@@ -88,14 +88,14 @@ const ServiceProviderInfo = ({
                       onClick={() => handleApprove(driver.id)}
                     >
                       <ApproveButtonIcon />
-                      ...loading
+                      ...Approve
                     </S.ApproveButton>
                     <S.BlockButton
                       disabled
                       onClick={() => handleBlock(driver.id)}
                     >
                       <BlockButtonIcon />
-                      ...loading
+                      ...Block
                     </S.BlockButton>
                   </>
                 ) : (
