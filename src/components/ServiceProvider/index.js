@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Table, Collapse, Nav, TabContent, TabPane, Row, Col } from 'reactstrap'
 
 import * as S from './style'
@@ -12,8 +12,15 @@ import { ReactComponent as ApproveButtonIcon } from '../../assets/icons/checkmar
 
 import ServiceProviderDetails from '../ServiceProviderDetails/index'
 import { GET_DRIVERS } from '../../service/api'
+import ApproveUser from '../../helpers/ApproveUser'
+import BlockUser from '../../helpers/BlockUser'
 
-const ServiceProviderInfo = ({ driver }) => {
+const ServiceProviderInfo = ({
+  driver,
+  handleApprove,
+  handleBlock,
+  loading
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('1')
 
@@ -72,16 +79,79 @@ const ServiceProviderInfo = ({ driver }) => {
       <Collapse tag="tr" isOpen={isOpen} style={{ background: '#fff' }}>
         <td colSpan="7" style={{ borderBottom: '1px solid #969696' }}>
           <S.Container>
-            <div>
-              <S.ApproveButton>
-                <ApproveButtonIcon />
-                Approve
-              </S.ApproveButton>
-              <S.BlockButton>
-                <BlockButtonIcon />
-                Block
-              </S.BlockButton>
-            </div>
+            {driver.status === 'pendding' ? (
+              <S.ContainerButtons>
+                {loading ? (
+                  <>
+                    <S.ApproveButton
+                      disabled
+                      onClick={() => handleApprove(driver.id)}
+                    >
+                      <ApproveButtonIcon />
+                      ...loading
+                    </S.ApproveButton>
+                    <S.BlockButton
+                      disabled
+                      onClick={() => handleBlock(driver.id)}
+                    >
+                      <BlockButtonIcon />
+                      ...loading
+                    </S.BlockButton>
+                  </>
+                ) : (
+                  <>
+                    <S.ApproveButton onClick={() => handleApprove(driver.id)}>
+                      <ApproveButtonIcon />
+                      Approve
+                    </S.ApproveButton>
+                    <S.BlockButton onClick={() => handleBlock(driver.id)}>
+                      <BlockButtonIcon />
+                      Block
+                    </S.BlockButton>
+                  </>
+                )}
+              </S.ContainerButtons>
+            ) : (
+              <></>
+            )}
+            {driver.status === 'blocked' ? (
+              <div>
+                {loading ? (
+                  <S.ApproveButton
+                    disabled
+                    onClick={() => handleApprove(driver.id)}
+                  >
+                    ...loading
+                  </S.ApproveButton>
+                ) : (
+                  <S.ApproveButton onClick={() => handleApprove(driver.id)}>
+                    <ApproveButtonIcon />
+                    Approve
+                  </S.ApproveButton>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
+            {driver.status === 'approved' ? (
+              <div>
+                {loading ? (
+                  <S.BlockButton
+                    disabled
+                    onClick={() => handleBlock(driver.id)}
+                  >
+                    ...loading
+                  </S.BlockButton>
+                ) : (
+                  <S.BlockButton onClick={() => handleBlock(driver.id)}>
+                    <BlockButtonIcon />
+                    Block
+                  </S.BlockButton>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
             <Nav tabs>
               <div>
                 <S.Button
@@ -144,6 +214,7 @@ const ServiceProviderInfo = ({ driver }) => {
                       <div>
                         <div>
                           <Label>Shipping Address</Label>
+
                           <p>{driverAddress}</p>
                         </div>
 
@@ -187,12 +258,16 @@ const ServiceProviderInfo = ({ driver }) => {
 
 const ServiceProviderComponent = () => {
   const [drivers, setDrivers] = useState(null)
+  const [approved, setApproved] = useState(false)
+  const [blocked, setBlocked] = useState(false)
+  const [loading, setLoading] = useState(null)
 
   useEffect(() => {
     let clear = false
     const getRestockOrders = async () => {
       try {
         if (!clear) {
+          setLoading(true)
           const token = window.localStorage.getItem('token')
 
           const { url, options } = GET_DRIVERS(token)
@@ -200,17 +275,31 @@ const ServiceProviderComponent = () => {
           const json = await response.json()
 
           setDrivers(json)
+          setApproved(true)
+          setBlocked(true)
         }
       } catch (error) {
         if (!clear) {
           throw error
         }
+      } finally {
+        setLoading(false)
       }
     }
     getRestockOrders()
     return () => {
       clear = true
     }
+  }, [approved, blocked])
+
+  const handleApprove = useCallback((id) => {
+    ApproveUser(id)
+    setApproved(false)
+  }, [])
+
+  const handleBlock = useCallback((id) => {
+    BlockUser(id)
+    setBlocked(false)
   }, [])
 
   return (
@@ -229,7 +318,13 @@ const ServiceProviderComponent = () => {
         <tbody>
           {drivers &&
             drivers.map((driver) => (
-              <ServiceProviderInfo key={driver.id} driver={driver} />
+              <ServiceProviderInfo
+                key={driver.id}
+                driver={driver}
+                handleApprove={handleApprove}
+                handleBlock={handleBlock}
+                loading={loading}
+              />
             ))}
         </tbody>
       </Table>

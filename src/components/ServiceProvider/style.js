@@ -22,6 +22,12 @@ export const Container = styled.div`
   }
 `
 
+export const ContainerButtons = styled.div`
+  button + button {
+    margin-left: 1rem !important;
+  }
+`
+
 export const BlockButton = styled.button`
   border: 1px solid #269e97;
   padding: 0.5rem 1rem;
@@ -29,7 +35,7 @@ export const BlockButton = styled.button`
   background: #fff;
   text-transform: uppercase;
   font-weight: bold;
-  margin-left: 1rem;
+  margin-left: auto;
 
   > svg {
     margin-right: 8px;
