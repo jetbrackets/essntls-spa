@@ -13,6 +13,7 @@ import TableItems from '../TableItems'
 import { ORDERS } from '../../service/api'
 
 import Image from '../../assets/images/customers-image.png'
+import dateFormat from '../../helpers/DateFormat'
 
 const OrderDetails = ({ order }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,6 +24,8 @@ const OrderDetails = ({ order }) => {
     height: '350px',
     maxWidth: '995px'
   }
+
+  const [date] = dateFormat(order.created_at).split(' ')
 
   return (
     <>
@@ -43,14 +46,34 @@ const OrderDetails = ({ order }) => {
         </td>
         <td className="align-middle text-center">
           <div>
-            <p style={{ margin: '0' }}>{order.accepted_in}</p>
-            <small style={{ color: '#969696' }}>02/23/2021</small>
+            {order.accepted_in !== null ? (
+              <>
+                <p style={{ margin: '0' }}>{order.accepted_in}</p>
+                <small style={{ color: '#969696' }}>
+                  {date.replaceAll('-', '/')}
+                </small>
+              </>
+            ) : (
+              <>
+                <p style={{ margin: '0' }}>&#9867; &#9867;</p>
+                <small style={{ color: '#969696' }}>&#9867; &#9867;</small>
+              </>
+            )}
           </div>
         </td>
         <td className="align-middle text-center">
           <div>
-            <p style={{ margin: '0' }}>{order.arrival_in}</p>
-            <small style={{ color: '#969696' }}>02/23/2021</small>
+            {order.arrival_in !== null ? (
+              <>
+                <p style={{ margin: '0' }}>{order.arrival_in}</p>
+                <small style={{ color: '#969696' }}>02/23/2021</small>
+              </>
+            ) : (
+              <>
+                <p style={{ margin: '0' }}>&#9867; &#9867;</p>
+                <small style={{ color: '#969696' }}>&#9867; &#9867;</small>
+              </>
+            )}
           </div>
         </td>
         <td className="align-middle text-center">$ {order.amount}</td>
@@ -61,14 +84,19 @@ const OrderDetails = ({ order }) => {
             name={order.customer.name}
           />
         </td>
-        <td className="col-md-3">
-          <ServiceProviderDetails
-            name={order.driver.name}
-            numberDeliveries={10}
-            image={Image}
-            inDashboard={false}
-          />
-        </td>
+        {order.driver ? (
+          <td className="col-md-3">
+            <ServiceProviderDetails
+              name={order.driver.name}
+              numberDeliveries={10}
+              image={Image}
+              inDashboard={false}
+            />
+          </td>
+        ) : (
+          <td>&#9867; &#9867;</td>
+        )}
+
         <td style={{ width: '40px' }}>
           <svg width="18" height="11" fill="none">
             <path
@@ -114,7 +142,7 @@ const OrderDetails = ({ order }) => {
 
                 <S.Location>
                   <S.Wrapper>
-                    <DestinationDetails adress={order} />
+                    <DestinationDetails address={order} />
 
                     <S.ItemsContainer>
                       <p>Items</p>
@@ -139,19 +167,19 @@ const OrderDetails = ({ order }) => {
                       <table className="table table-borderless">
                         <tbody>
                           <tr>
-                            Requested in:
+                            <td>Requested in:</td>
                             <td>{order.accepted_in}</td>
                           </tr>
                           <tr>
-                            Acepted in:
+                            <td>Acepted in:</td>
                             <td>{order.accepted_in}</td>
                           </tr>
                           <tr>
-                            Arrival in:
+                            <td>Arrival in:</td>
                             <td>{order.arrival_in}</td>
                           </tr>
                           <tr>
-                            Delivery time:
+                            <td>Delivery time:</td>
                             <td>{order.delivery_time}</td>
                           </tr>
                         </tbody>
@@ -163,19 +191,19 @@ const OrderDetails = ({ order }) => {
                       <table className="table table-borderless">
                         <tbody>
                           <tr>
-                            Items:
+                            <td>Items:</td>
                             <td>16 p.m</td>
                           </tr>
                           <tr>
-                            Shipping:
+                            <td>Shipping:</td>
                             <td>{order.shipping}</td>
                           </tr>
                           <tr>
-                            Provider’s Commission:
+                            <td>Provider’s Commission:</td>
                             <td>{order.commission}</td>
                           </tr>
                           <tr>
-                            Essntl’s Profit:
+                            <td>Essntl’s Profit:</td>
                             <td>{order.profit}</td>
                           </tr>
                         </tbody>
