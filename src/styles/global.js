@@ -43,17 +43,9 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Poppins', sans-serif;
   }
 
-  #nprogress .bar {
-  background: var(--primary-color);
-}
-
-#nprogress .peg {
-  box-shadow: 0 0 10px var(--primary-color), 0 0 5px var(--primary-color);
-}
-
-#nprogress .spinner-icon {
-  border-top-color: var(--primary-color);
-  border-left-color: var(--primary-color);
-}
+  button:disabled{
+    opacity: 0.5;
+    cursor: wait;
+  }
 `
 export default GlobalStyles

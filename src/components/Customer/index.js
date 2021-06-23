@@ -6,7 +6,8 @@ import * as S from './style'
 import CustomerDetails from '../CustomerDetails'
 import Label from '../Label/Label'
 
-import { GET_CUSTOMERS, BLOCK_USER } from '../../service/api'
+import { GET_CUSTOMERS } from '../../service/api'
+import BlockUser from '../../helpers/BlockUser'
 
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
@@ -143,7 +144,7 @@ const CustomerInfo = ({ customer, handleBlock }) => {
 
 const CustomerComponent = () => {
   const [customers, setCustomers] = useState(null)
-  const [statusUser, setStatusUser] = useState(false)
+  const [blocked, setBlocked] = useState(false)
 
   useEffect(() => {
     let clear = false
@@ -157,7 +158,7 @@ const CustomerComponent = () => {
           const json = await response.json()
 
           setCustomers(json)
-          setStatusUser(true)
+          setBlocked(true)
         }
       } catch (error) {
         if (!clear) {
@@ -169,17 +170,11 @@ const CustomerComponent = () => {
     return () => {
       clear = true
     }
-  }, [statusUser])
+  }, [blocked])
 
-  const handleBlock = useCallback(async (id) => {
-    const token = window.localStorage.getItem('token')
-
-    const { url, options } = BLOCK_USER(token, id)
-
-    const response = await fetch(url, options)
-    const json = await response.json()
-
-    setStatusUser(false)
+  const handleBlock = useCallback((id) => {
+    BlockUser(id)
+    setBlocked(false)
   }, [])
 
   return (
