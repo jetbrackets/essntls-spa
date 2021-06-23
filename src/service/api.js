@@ -76,7 +76,19 @@ export const GET_DRIVERS = (token) => {
 
 export const BLOCK_USER = (token, id) => {
   return {
-    url: `${API_URL}/admin/v1/user/block/${id}'`,
+    url: `${API_URL}/admin/v1/user/block/${id}`,
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}
+
+export const APPROVE_USER = (token, id) => {
+  return {
+    url: `${API_URL}/admin/v1/user/approve/${id}`,
     options: {
       method: 'GET',
       headers: {
