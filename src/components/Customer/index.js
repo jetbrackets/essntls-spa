@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useState } from 'react'
 import { Table, Collapse, Nav, TabContent, TabPane, Row, Col } from 'reactstrap'
 
 import * as S from './style'
@@ -7,7 +7,8 @@ import CustomerDetails from '../CustomerDetails'
 import Label from '../Label/Label'
 
 import { GET_CUSTOMERS } from '../../service/api'
-import BlockUser from '../../helpers/BlockUser'
+import { useFetch } from '../../hooks/useFetch'
+import dateFormat from '../../helpers/DateFormat'
 
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
@@ -29,6 +30,8 @@ const CustomerInfo = ({ customer, handleBlock }) => {
     customerAddress = address
   }
 
+  const [date] = dateFormat(customer.created_at).split(' ')
+
   return (
     <>
       <tr
@@ -46,7 +49,7 @@ const CustomerInfo = ({ customer, handleBlock }) => {
         <td className="align-middle">{customer.phone}</td>
         <td className="align-middle">
           <div>
-            <p>02/23/2021</p>
+            <p>{date.replaceAll('-', '/')}</p>
           </div>
         </td>
         <td className="align-middle col-md-2">2</td>
@@ -143,39 +146,7 @@ const CustomerInfo = ({ customer, handleBlock }) => {
 }
 
 const CustomerComponent = () => {
-  const [customers, setCustomers] = useState(null)
-  const [blocked, setBlocked] = useState(false)
-
-  useEffect(() => {
-    let clear = false
-    const getRestockOrders = async () => {
-      try {
-        if (!clear) {
-          const token = window.localStorage.getItem('token')
-
-          const { url, options } = GET_CUSTOMERS(token)
-          const response = await fetch(url, options)
-          const json = await response.json()
-
-          setCustomers(json)
-          setBlocked(true)
-        }
-      } catch (error) {
-        if (!clear) {
-          throw error
-        }
-      }
-    }
-    getRestockOrders()
-    return () => {
-      clear = true
-    }
-  }, [blocked])
-
-  const handleBlock = useCallback((id) => {
-    BlockUser(id)
-    setBlocked(false)
-  }, [])
+  const { data, handleBlock } = useFetch(GET_CUSTOMERS)
 
   return (
     <>
@@ -190,8 +161,8 @@ const CustomerComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          {customers &&
-            customers.map((customer) => (
+          {data &&
+            data.map((customer) => (
               <CustomerInfo
                 key={customer.id}
                 customer={customer}

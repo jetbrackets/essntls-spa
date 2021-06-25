@@ -1,19 +1,20 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Table, Collapse, Nav, TabContent, TabPane, Row, Col } from 'reactstrap'
 
 import * as S from './style'
 
+import { GET_DRIVERS } from '../../service/api'
+
+import { useFetch } from '../../hooks/useFetch'
+
+import dateFormat from '../../helpers/DateFormat'
+
 import Label from '../Label/Label'
+import ServiceProviderDetails from '../ServiceProviderDetails'
 
 import Image from '../../assets/images/customers-image.png'
-
 import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
 import { ReactComponent as ApproveButtonIcon } from '../../assets/icons/checkmark.svg'
-
-import ServiceProviderDetails from '../ServiceProviderDetails/index'
-import { GET_DRIVERS } from '../../service/api'
-import ApproveUser from '../../helpers/ApproveUser'
-import BlockUser from '../../helpers/BlockUser'
 
 const ServiceProviderInfo = ({
   driver,
@@ -41,6 +42,8 @@ const ServiceProviderInfo = ({
     paymentMethod.push(name, type, number)
   }
 
+  const [date] = dateFormat(driver.created_at).split(' ')
+
   return (
     <>
       <tr
@@ -58,7 +61,7 @@ const ServiceProviderInfo = ({
         <td className="align-middle">{driver.phone}</td>
         <td className="align-middle">
           <div>
-            <p>02/23/2021</p>
+            <p>{date.replaceAll('-', '/')}</p>
           </div>
         </td>
         <td className="align-middle">1000</td>
@@ -257,50 +260,7 @@ const ServiceProviderInfo = ({
 }
 
 const ServiceProviderComponent = () => {
-  const [drivers, setDrivers] = useState(null)
-  const [approved, setApproved] = useState(false)
-  const [blocked, setBlocked] = useState(false)
-  const [loading, setLoading] = useState(null)
-
-  useEffect(() => {
-    let clear = false
-    const getRestockOrders = async () => {
-      try {
-        if (!clear) {
-          setLoading(true)
-          const token = window.localStorage.getItem('token')
-
-          const { url, options } = GET_DRIVERS(token)
-          const response = await fetch(url, options)
-          const json = await response.json()
-
-          setDrivers(json)
-          setApproved(true)
-          setBlocked(true)
-        }
-      } catch (error) {
-        if (!clear) {
-          throw error
-        }
-      } finally {
-        setLoading(false)
-      }
-    }
-    getRestockOrders()
-    return () => {
-      clear = true
-    }
-  }, [approved, blocked])
-
-  const handleApprove = useCallback((id) => {
-    ApproveUser(id)
-    setApproved(false)
-  }, [])
-
-  const handleBlock = useCallback((id) => {
-    BlockUser(id)
-    setBlocked(false)
-  }, [])
+  const { data, handleApprove, handleBlock, loading } = useFetch(GET_DRIVERS)
 
   return (
     <>
@@ -316,8 +276,8 @@ const ServiceProviderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          {drivers &&
-            drivers.map((driver) => (
+          {data &&
+            data.map((driver) => (
               <ServiceProviderInfo
                 key={driver.id}
                 driver={driver}

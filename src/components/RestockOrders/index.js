@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Table, Collapse, Progress } from 'reactstrap'
 
 import * as S from './style'
@@ -7,16 +7,20 @@ import ServiceProviderDetails from '../ServiceProviderDetails/'
 import Label from '../Label/Label'
 import TableItems from '../TableItems'
 
+import { RESTOCK_ORDERS } from '../../service/api'
+import { useFetch } from '../../hooks/useFetch'
+import dateFormat from '../../helpers/DateFormat'
+
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as PrintIcon } from '../../assets/icons/print.svg'
 import { ReactComponent as Options } from '../../assets/icons/kebab.svg'
-
-import { RESTOCK_ORDERS } from '../../service/api'
 
 const OrderDetails = ({ restockOrder }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
+
+  const [date] = dateFormat(restockOrder.created_at).split(' ')
 
   return (
     <>
@@ -35,7 +39,7 @@ const OrderDetails = ({ restockOrder }) => {
         <td className="align-middle">{restockOrder.status}</td>
         <td className="align-middle text-center">#{restockOrder.id}</td>
         <td className="align-middle text-center">
-          <p>02/25/2021</p>
+          <p>{date.replaceAll('-', '/')}</p>
         </td>
         <td className="align-middle text-center">
           <p>02/28/2021</p>
@@ -89,7 +93,7 @@ const OrderDetails = ({ restockOrder }) => {
                   <p>{restockOrder.driver.phone}</p>
                 </div>
                 <div>
-                  <Label>Shipping Adrress</Label>
+                  <Label>Shipping Address</Label>
                   <p>{restockOrder.shipping_address}</p>
                 </div>
                 <div>
@@ -123,32 +127,7 @@ const OrderDetails = ({ restockOrder }) => {
 }
 
 const RestockOrderComponent = () => {
-  const [restockOrders, setRestockOrders] = useState(null)
-
-  useEffect(() => {
-    let clear = false
-    const getRestockOrders = async () => {
-      try {
-        if (!clear) {
-          const token = window.localStorage.getItem('token')
-
-          const { url, options } = RESTOCK_ORDERS(token)
-          const response = await fetch(url, options)
-          const json = await response.json()
-
-          setRestockOrders(json)
-        }
-      } catch (error) {
-        if (!clear) {
-          throw error
-        }
-      }
-    }
-    getRestockOrders()
-    return () => {
-      clear = true
-    }
-  }, [])
+  const { data } = useFetch(RESTOCK_ORDERS)
 
   return (
     <>
@@ -174,8 +153,8 @@ const RestockOrderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          {restockOrders &&
-            restockOrders.map((restockOrder) => (
+          {data &&
+            data.map((restockOrder) => (
               <OrderDetails key={restockOrder.id} restockOrder={restockOrder} />
             ))}
         </tbody>

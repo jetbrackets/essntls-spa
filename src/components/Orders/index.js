@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Table, Collapse, Progress } from 'reactstrap'
 
 import * as S from './style'
@@ -14,6 +14,7 @@ import { ORDERS } from '../../service/api'
 
 import Image from '../../assets/images/customers-image.png'
 import dateFormat from '../../helpers/DateFormat'
+import { useFetch } from '../../hooks/useFetch'
 
 const OrderDetails = ({ order }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -171,7 +172,7 @@ const OrderDetails = ({ order }) => {
                             <td>{order.accepted_in}</td>
                           </tr>
                           <tr>
-                            <td>Acepted in:</td>
+                            <td>Accepted in:</td>
                             <td>{order.accepted_in}</td>
                           </tr>
                           <tr>
@@ -221,33 +222,7 @@ const OrderDetails = ({ order }) => {
 }
 
 const OrderComponent = () => {
-  const [orders, setOrders] = useState(false)
-
-  useEffect(() => {
-    let clear = false
-    const getActiveDrives = async () => {
-      try {
-        if (!clear) {
-          const token = window.localStorage.getItem('token')
-
-          const { url, options } = ORDERS(token)
-          const response = await fetch(url, options)
-          const json = await response.json()
-
-          setOrders(json)
-        }
-      } catch (error) {
-        if (!clear) {
-          throw error
-        }
-      }
-    }
-
-    getActiveDrives()
-    return () => {
-      clear = true
-    }
-  }, [])
+  const { data } = useFetch(ORDERS)
 
   return (
     <>
@@ -259,7 +234,7 @@ const OrderComponent = () => {
               Order number
             </th>
             <th scope="col" className="text-center">
-              Acepted in
+              Accepted in
             </th>
             <th scope="col" className="text-center">
               Arrival in
@@ -272,10 +247,8 @@ const OrderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          {orders &&
-            orders.map((order) => (
-              <OrderDetails key={order.id} order={order} />
-            ))}
+          {data &&
+            data.map((order) => <OrderDetails key={order.id} order={order} />)}
         </tbody>
       </Table>
     </>
