@@ -9,14 +9,15 @@ import DestinationDetails from '../DestinationDetails'
 import WrapperdMap from '../Map'
 import Label from '../Label/Label'
 import TableItems from '../TableItems'
+import CustomPagination from '../CustomPagination'
 
 import { ORDERS } from '../../service/api'
+import { usePagination } from '../../hooks/usePagination'
 
 import Image from '../../assets/images/customers-image.png'
 import dateFormat from '../../helpers/DateFormat'
-import { useFetch } from '../../hooks/useFetch'
 
-const OrderDetails = ({ order }) => {
+const OrderDetails = ({ order, value }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
@@ -222,7 +223,7 @@ const OrderDetails = ({ order }) => {
 }
 
 const OrderComponent = () => {
-  const { data } = useFetch(ORDERS)
+  const { value, pageNumber, setPageNumber } = usePagination(ORDERS)
 
   return (
     <>
@@ -247,10 +248,17 @@ const OrderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          {data &&
-            data.map((order) => <OrderDetails key={order.id} order={order} />)}
+          {value &&
+            value.data.map((order) => (
+              <OrderDetails key={order.id} order={order} value={value} />
+            ))}
         </tbody>
       </Table>
+      <CustomPagination
+        value={value}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+      />
     </>
   )
 }

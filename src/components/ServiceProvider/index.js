@@ -260,7 +260,7 @@ const ServiceProviderInfo = ({
 }
 
 const ServiceProviderComponent = () => {
-  const { data, handleApprove, handleBlock, loading } = useFetch(GET_DRIVERS)
+  const { value, handleApprove, handleBlock, loading } = useFetch(GET_DRIVERS)
 
   return (
     <>
@@ -276,8 +276,8 @@ const ServiceProviderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          {data &&
-            data.map((driver) => (
+          {value &&
+            value.map((driver) => (
               <ServiceProviderInfo
                 key={driver.id}
                 driver={driver}

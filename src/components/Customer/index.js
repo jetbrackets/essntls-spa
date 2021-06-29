@@ -146,7 +146,7 @@ const CustomerInfo = ({ customer, handleBlock }) => {
 }
 
 const CustomerComponent = () => {
-  const { data, handleBlock } = useFetch(GET_CUSTOMERS)
+  const { value, handleBlock } = useFetch(GET_CUSTOMERS)
 
   return (
     <>
@@ -161,8 +161,8 @@ const CustomerComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          {data &&
-            data.map((customer) => (
+          {value &&
+            value.map((customer) => (
               <CustomerInfo
                 key={customer.id}
                 customer={customer}
