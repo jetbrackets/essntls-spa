@@ -4,7 +4,7 @@ import ApproveUser from '../helpers/ApproveUser'
 import BlockUser from '../helpers/BlockUser'
 
 export const useFetch = (SERVICE_URL) => {
-  const [data, setData] = useState(null)
+  const [value, setValue] = useState(null)
   const [approved, setApproved] = useState(false)
   const [blocked, setBlocked] = useState(false)
   const [loading, setLoading] = useState(null)
@@ -21,7 +21,7 @@ export const useFetch = (SERVICE_URL) => {
           const response = await fetch(url, options)
           const json = await response.json()
 
-          setData(json)
+          setValue(json)
           setApproved(true)
           setBlocked(true)
         }
@@ -50,7 +50,8 @@ export const useFetch = (SERVICE_URL) => {
   }, [])
 
   return {
-    data,
+    value,
+    setValue,
     handleApprove,
     handleBlock,
     loading

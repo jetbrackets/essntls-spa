@@ -127,7 +127,7 @@ const OrderDetails = ({ restockOrder }) => {
 }
 
 const RestockOrderComponent = () => {
-  const { data } = useFetch(RESTOCK_ORDERS)
+  const { value } = useFetch(RESTOCK_ORDERS)
 
   return (
     <>
@@ -153,8 +153,8 @@ const RestockOrderComponent = () => {
           </S.TableRow>
         </thead>
         <tbody>
-          {data &&
-            data.map((restockOrder) => (
+          {value &&
+            value.map((restockOrder) => (
               <OrderDetails key={restockOrder.id} restockOrder={restockOrder} />
             ))}
         </tbody>

@@ -26,9 +26,9 @@ export const ACTIVE_DRIVERS = (token) => {
   }
 }
 
-export const ORDERS = (token) => {
+export const ORDERS = (token, pageNumber) => {
   return {
-    url: API_URL + '/admin/v1/orders',
+    url: `${API_URL}/admin/v1/orders?page=${pageNumber}`,
     options: {
       method: 'GET',
       headers: {
