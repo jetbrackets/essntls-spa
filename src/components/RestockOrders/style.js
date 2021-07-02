@@ -5,6 +5,8 @@ export const Wrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 2rem;
   margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #eee;
 
   @media (max-width: 1000px) {
     grid-template-columns: 1fr;

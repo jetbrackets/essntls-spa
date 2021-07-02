@@ -7,6 +7,9 @@ export const TableRow = styled.tr`
 `
 
 export const Container = styled.div`
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #eee;
+
   > div {
     display: flex;
     margin-bottom: 1rem;

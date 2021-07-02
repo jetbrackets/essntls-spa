@@ -7,14 +7,7 @@ export const Wrapper = styled.div`
   img {
     height: 42px;
     width: 42px;
-  }
-
-  @media (max-width: 960px) {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    text-align: center;
+    flex: 1;
   }
 `
 
