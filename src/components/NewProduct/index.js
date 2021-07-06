@@ -1,5 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import * as S from './style'
+
+import { ADD_PRODUCT } from '../../service/api'
 
 import { CustomInput } from 'reactstrap'
 
@@ -8,12 +12,34 @@ import { ReactComponent as CheckIcon } from '../../assets/icons/checkmark-white.
 
 const NewProduct = () => {
   const [image, setImage] = useState({})
+  const [name, setName] = useState('')
+  const [stock, setStock] = useState('')
+  const [price, setPrice] = useState('')
+  const [purchasePrice, setPurchasePrice] = useState('')
 
   const handlePreview = ({ target }) => {
     setImage({
       preview: URL.createObjectURL(target.files[0]),
       raw: target.files[0]
     })
+  }
+
+  const navigate = useNavigate()
+
+  const handleNewProduct = async (body, token) => {
+    token = window.localStorage.getItem('token')
+
+    body = {
+      name, stock, price, purchase_price: purchasePrice, status: 1, image: null
+    }
+
+    const {url, options} = ADD_PRODUCT(body, token)
+    const response = await fetch(url, options)
+    const json = await response.json()
+
+    if(response.ok) navigate('/inventory')
+
+    return json
   }
 
   const refreshImage = () => setImage({})
@@ -34,16 +60,16 @@ const NewProduct = () => {
         <div>
           <form>
             <div>
-              <S.Input type="text" placeholder="Name" />
+              <S.Input type="text" placeholder="Name" value={name} onChange={({target}) => setName(target.value)} />
             </div>
 
             <S.Container>
               <div>
-                <S.Input type="text" placeholder="Purchase price ($)" />
-                <S.Input type="text" placeholder="Sell price ($)" />
+                <S.Input type="text" placeholder="Purchase price ($)" value={purchasePrice} onChange={({target}) => setPurchasePrice(target.value)}/>
+                <S.Input type="text" placeholder="Sell price ($)" value={price} onChange={({target}) => setPrice(target.value)}/>
               </div>
               <div>
-                <S.Input type="text" placeholder="Quantity" />
+                <S.Input type="text" placeholder="Quantity" value={stock} onChange={({target}) => setStock(target.value)}/>
                 <CustomInput
                   type="checkbox"
                   id="exampleCustomCheckbox"
@@ -59,7 +85,7 @@ const NewProduct = () => {
           <CancelIcon />
           Cancel
         </S.Button>
-        <S.Button className="add-button">
+        <S.Button className="add-button" onClick={handleNewProduct}>
           <CheckIcon />
           Add
         </S.Button>

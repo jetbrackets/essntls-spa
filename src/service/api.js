@@ -109,3 +109,18 @@ export const GET_PRODUCTS = (token) => {
     }
   }
 }
+
+export const ADD_PRODUCT = (body, token) => {
+  return {
+    url: API_URL + '/admin/v1/product/store',
+    options: {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(body)
+    }
+  }
+}
