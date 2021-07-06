@@ -97,3 +97,15 @@ export const APPROVE_USER = (token, id) => {
     }
   }
 }
+
+export const GET_PRODUCTS = (token) => {
+  return {
+    url: API_URL + '/admin/v1/product',
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}
