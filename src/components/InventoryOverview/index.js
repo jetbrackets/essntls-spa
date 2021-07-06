@@ -38,7 +38,7 @@ const InventoryOverview = () => {
       },
       {
         name: 'Profit ($)',
-        selector: (row) => row['arrival_in'],
+        selector: (row) => `${row.price * row.purchase_price}`,
         sortable: true,
         center: true
       },
