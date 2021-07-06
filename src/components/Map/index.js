@@ -23,7 +23,7 @@ const center = {
   lng: -75.6903
 }
 
-const WrapperdMap = ({ mapContainerStyle }) => {
+const WrapperdMap = ({ mapContainerStyle, value }) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyDZ3LwmK5_dj0YoUXy8u_7NMU0o2u1Nvuk',
     libraries
@@ -41,20 +41,23 @@ const WrapperdMap = ({ mapContainerStyle }) => {
         center={center}
         mapContainerStyle={mapContainerStyle}
       >
-        {data.features.map((park) => (
-          <Marker
-            key={park.properties.PARK_ID}
-            position={{
-              lat: park.geometry.coordinates[1],
-              lng: park.geometry.coordinates[0]
-            }}
-            onClick={() => setSelectedPark(park)}
-            icon={{
-              url: `/assets/icons/car.svg`,
-              scaledSize: new window.google.maps.Size(25, 25)
-            }}
-          />
-        ))}
+        {value &&
+          data.features
+            .filter((_, index) => index < value.length)
+            .map((park) => (
+              <Marker
+                key={park.properties.PARK_ID}
+                position={{
+                  lat: park.geometry.coordinates[1],
+                  lng: park.geometry.coordinates[0]
+                }}
+                onClick={() => setSelectedPark(park)}
+                icon={{
+                  url: `/assets/icons/car.svg`,
+                  scaledSize: new window.google.maps.Size(25, 25)
+                }}
+              />
+            ))}
 
         {selectedPark ? (
           <InfoWindow
@@ -69,11 +72,13 @@ const WrapperdMap = ({ mapContainerStyle }) => {
             <div>
               <S.Container>
                 <S.UserContainer>
-                  <ServiceProviderDetails
-                    image={Image}
-                    name="Mark"
-                    numberDeliveries="1000"
-                  />
+                  {value && (
+                    <ServiceProviderDetails
+                      image={Image}
+                      name={value.name}
+                      numberDeliveries="1000"
+                    />
+                  )}
                   <S.Button />
                 </S.UserContainer>
 
@@ -92,7 +97,7 @@ const WrapperdMap = ({ mapContainerStyle }) => {
                         Requested in: <span>16 p.m</span>
                       </p>
                       <p>
-                        Acepted in: <span>16:05 p.m</span>
+                        Accepted in: <span>16:05 p.m</span>
                       </p>
                       <p>
                         Arrival in:1<span>6:25 p.m</span>{' '}

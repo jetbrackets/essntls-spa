@@ -78,3 +78,15 @@ export const ContainerSwtich = styled.div`
     margin-left: 8px;
   }
 `
+export const customStyles = {
+  cells: {
+    style: {
+      padding: '.5rem'
+    }
+  },
+  headCells: {
+    style: {
+      color: 'var(--primary-color)'
+    }
+  }
+}

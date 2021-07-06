@@ -1,51 +1,26 @@
-import { useEffect, useState } from 'react'
-
 import * as S from './style'
+
+import { useFetch } from '../../hooks/useFetch'
+import { ACTIVE_DRIVERS } from '../../service/api'
 
 import ServiceProviderDetails from '../ServiceProviderDetails'
 
 import Image from '../../assets/images/customers-image.png'
 import WrapperdMap from '../Map'
-import { ACTIVE_DRIVERS } from '../../service/api'
 
 const DashbordComponent = () => {
-  const [driver, setDriver] = useState(null)
   const mapContainerStyle = {
     height: '500px',
     maxWidth: '995px'
   }
 
-  useEffect(() => {
-    let clear = false
-    const getActiveDrives = async () => {
-      try {
-        if (!clear) {
-          const token = window.localStorage.getItem('token')
-
-          const { url, options } = ACTIVE_DRIVERS(token)
-          const response = await fetch(url, options)
-          const json = await response.json()
-
-          setDriver(json)
-        }
-      } catch (error) {
-        if (!clear) {
-          throw error
-        }
-      }
-    }
-
-    getActiveDrives()
-    return () => {
-      clear = true
-    }
-  }, [])
+  const { value } = useFetch(ACTIVE_DRIVERS)
 
   return (
     <>
       <S.Wrapper>
         <S.MapContainer>
-          <WrapperdMap mapContainerStyle={mapContainerStyle} />
+          <WrapperdMap mapContainerStyle={mapContainerStyle} value={value} />
         </S.MapContainer>
         <S.ActiveContainer>
           <div>
@@ -85,8 +60,8 @@ const DashbordComponent = () => {
           </div>
           <S.ActiveList>
             <div>
-              {driver &&
-                driver.map(({ name, id }) => (
+              {value &&
+                value.map(({ name, id }) => (
                   <ServiceProviderDetails
                     key={id}
                     name={name}

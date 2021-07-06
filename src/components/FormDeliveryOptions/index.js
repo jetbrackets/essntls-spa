@@ -1,20 +1,19 @@
 import * as S from './style'
 
-const FormDeliveryOptions = ({ setSelect, options }) => {
+const FormDeliveryOptions = ({ setSelect, options, setText }) => {
   const handleInput = ({ target }) => setSelect(target.value)
+  const handleText = ({ target }) => {
+    setText(target.value)
+  }
 
   return (
     <S.Wrapper>
-      <input type="text" />
+      <input type="text" onChange={handleText} />
       <S.FilterDeliveryOptions>
         <select onChange={handleInput}>
           {options.map((option) => (
             <option key={option}>{option}</option>
           ))}
-          {/* <option>pending</option>
-          <option>accepted</option>
-          <option>canceled</option>
-          <option>done</option> */}
         </select>
       </S.FilterDeliveryOptions>
     </S.Wrapper>

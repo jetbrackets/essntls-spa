@@ -97,3 +97,15 @@ export const ItemsContainer = styled.div`
     margin-top: 1rem;
   }
 `
+export const customStyles = {
+  cells: {
+    style: {
+      padding: '.5rem'
+    }
+  },
+  headCells: {
+    style: {
+      color: 'var(--primary-color)'
+    }
+  }
+}

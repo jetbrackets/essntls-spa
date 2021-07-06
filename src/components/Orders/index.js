@@ -12,6 +12,7 @@ import Label from '../Label/Label'
 import TableItems from '../TableItems'
 
 import Image from '../../assets/images/customers-image.png'
+import FilterData from '../../helpers/FilterData'
 
 const OrderDetails = (props) => {
   const mapContainerStyle = {
@@ -128,36 +129,15 @@ const OrderDetails = (props) => {
   )
 }
 
-const OrderComponent = ({ value, loading, select }) => {
-  const dataFilter = value
-    ? value.filter((value) =>
-        value.status.includes(
-          `${select === 'all'.toLocaleLowerCase() ? '' : select}`
-        )
-      )
-    : value
-
-  const customStyles = {
-    cells: {
-      style: {
-        padding: '.5rem'
-      }
-    },
-    headCells: {
-      style: {
-        color: 'var(--primary-color)'
-      }
-    }
-  }
+const OrderComponent = ({ value, loading, select, text }) => {
+  const dataFilter = value ? FilterData(value, select, text) : value
 
   const columns = useMemo(
     () => [
       {
         name: 'Order number',
-        cell: (row) => <p style={{ color: '#969696' }}>#{row.id}</p>,
-        sortable: true,
-        editable: true,
-        wrap: false
+        selector: (row) => `#${row['id']}`,
+        sortable: true
       },
       {
         name: 'Accepted in',
@@ -217,7 +197,7 @@ const OrderComponent = ({ value, loading, select }) => {
           pagination
           paginationRowsPerPageOptions={[5, 10, 15, 20]}
           highlightOnHover
-          customStyles={customStyles}
+          customStyles={S.customStyles}
         />
       )}
     </>

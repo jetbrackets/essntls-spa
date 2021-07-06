@@ -76,7 +76,7 @@ const RestockOrdersDetails = (props) => {
   )
 }
 
-const RestockOrderComponent = ({ value, loading, select }) => {
+const RestockOrderComponent = ({ value, loading, select, text }) => {
   const dataFilter = value
     ? value.filter((value) =>
         value.status.includes(

@@ -11,6 +11,7 @@ import { useFetch } from '../../hooks/useFetch'
 const Orders = () => {
   const { value, loading } = useFetch(ORDERS)
   const [select, setSelect] = useState('')
+  const [text, setText] = useState('')
   const options = ['all', 'pending', 'accepted', 'canceled', 'done']
 
   return (
@@ -19,9 +20,18 @@ const Orders = () => {
       <Sidebar />
       <Content>
         <ContentHeader title="Orders">
-          <FormDeliveryOptions setSelect={setSelect} options={options} />
+          <FormDeliveryOptions
+            setSelect={setSelect}
+            options={options}
+            setText={setText}
+          />
         </ContentHeader>
-        <OrderComponent value={value} loading={loading} select={select} />
+        <OrderComponent
+          value={value}
+          loading={loading}
+          select={select}
+          text={text}
+        />
       </Content>
     </>
   )
