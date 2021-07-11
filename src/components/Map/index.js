@@ -25,7 +25,7 @@ const center = {
 
 const WrapperdMap = ({ mapContainerStyle, value }) => {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyDZ3LwmK5_dj0YoUXy8u_7NMU0o2u1Nvuk',
+    googleMapsApiKey: 'AIzaSyBnKBmdWf7NmTVwbQYqdfI7raoFZOHe014',
     libraries
   })
   const [selectedPark, setSelectedPark] = useState(null)
