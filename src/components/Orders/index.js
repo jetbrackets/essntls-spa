@@ -12,7 +12,8 @@ import Label from '../Label/Label'
 import TableItems from '../TableItems'
 
 import Image from '../../assets/images/customers-image.png'
-import FilterData from '../../helpers/FilterData'
+import FilterOrder from '../../helpers/FilterOrder'
+import { ReactComponent as SignalButton } from '../../assets/icons/signal.svg'
 
 const OrderDetails = (props) => {
   const mapContainerStyle = {
@@ -27,20 +28,7 @@ const OrderDetails = (props) => {
       <div>
         <div>
           <S.GetRealTimeButton>
-            <svg width="20" height="21" fill="none">
-              <path
-                d="M3 19.5C1.89543 19.5 1 18.6046 1 17.5C1 16.3954 1.89543 15.5 3 15.5C4.10457 15.5 5 16.3954 5 17.5C5 18.6046 4.10457 19.5 3 19.5Z"
-                fill="#269E97"
-              />
-              <path
-                d="M11 18.5C11 13.5294 6.97056 9.5 2 9.5V7.5C8.07513 7.5 13 12.4249 13 18.5H11Z"
-                fill="#269E97"
-              />
-              <path
-                d="M18 18.5C18 9.66344 10.8365 2.5 1.99997 2.5V0.5C11.9411 0.5 20 8.55887 20 18.5H18Z"
-                fill="#269E97"
-              />
-            </svg>
+            <SignalButton />
             track in real time
           </S.GetRealTimeButton>
         </div>
@@ -130,7 +118,7 @@ const OrderDetails = (props) => {
 }
 
 const OrderComponent = ({ value, loading, select, text }) => {
-  const dataFilter = value ? FilterData(value, select, text) : value
+  const dataFilter = value ? FilterOrder(value, select, text) : value
 
   const columns = useMemo(
     () => [
@@ -163,22 +151,26 @@ const OrderComponent = ({ value, loading, select, text }) => {
           <CustomerDetails Image={Image} name={row.customer.name} />
         ),
         minWidth: '230px',
-        wrap: false
+        wrap: false,
+        selector: ({ customer }) => (customer ? customer['name'] : ''),
+        sortable: true
       },
       {
         name: 'Service Provider',
         cell: (row) =>
-          row.drive ? (
+          row.driver ? (
             <ServiceProviderDetails
-              Image={Image}
+              image={Image}
               name={row.driver.name}
               inDashboard={false}
             />
           ) : (
             ''
           ),
+        selector: ({ driver }) => (driver ? driver['name'] : ''),
         minWidth: '230px',
-        wrap: false
+        wrap: false,
+        sortable: true
       }
     ],
     []
