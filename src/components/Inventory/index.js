@@ -11,7 +11,7 @@ const InventoryComponent = () => {
       <S.Wrapper>
         <Routes>
           <Route path="/" element={<InventoryOverview />} />
-          <Route path="new-product" element={<NewProduct />} />
+          <Route path="new/product" element={<NewProduct />} />
         </Routes>
       </S.Wrapper>
     </>

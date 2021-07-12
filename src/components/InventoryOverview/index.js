@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import DataTable from 'react-data-table-component'
-
 import Switch from 'react-switch'
 
 import * as S from './style'
 
+import { useFetch } from '../../hooks/useFetch'
+import { GET_PRODUCTS } from '../../service/api'
+
 import { ReactComponent as EditButton } from '../../assets/icons/edit.svg'
 import { ReactComponent as CartButton } from '../../assets/icons/cart.svg'
 import { ReactComponent as SumButton } from '../../assets/icons/sum.svg'
-import { useFetch } from '../../hooks/useFetch'
-import { GET_PRODUCTS } from '../../service/api'
 
 const InventoryOverview = () => {
   const [checked, setChecked] = useState(false)
@@ -73,7 +73,7 @@ const InventoryOverview = () => {
           </S.Button>
           <S.Button>
             <SumButton />
-            <Link style={{ color: 'var(--primary-color)' }} to="new-product">
+            <Link style={{ color: 'var(--primary-color)' }} to="new/product">
               New Product
             </Link>
           </S.Button>
