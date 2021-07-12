@@ -1,4 +1,4 @@
-const FilterData = (value, select, text) => {
+const FilterOrder = (value, select, text) => {
   return value.filter(
     (value) =>
       value.status
@@ -19,4 +19,4 @@ const FilterData = (value, select, text) => {
   )
 }
 
-export default FilterData
+export default FilterOrder
