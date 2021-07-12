@@ -12,6 +12,7 @@ import FormDeliveryOptions from '../../components/FormDeliveryOptions'
 const Customers = () => {
   const { value, loading, handleBlock } = useFetch(GET_CUSTOMERS)
   const [select, setSelect] = useState('')
+  const [text, setText] = useState('')
   const options = ['all', 'approved', 'blocked']
 
   return (
@@ -19,13 +20,18 @@ const Customers = () => {
       <PartialsDashboard />
       <Content>
         <ContentHeader title="Customers">
-          <FormDeliveryOptions options={options} setSelect={setSelect} />
+          <FormDeliveryOptions
+            options={options}
+            setSelect={setSelect}
+            setText={setText}
+          />
         </ContentHeader>
         <CustomerComponent
           value={value}
           loading={loading}
           select={select}
           handleBlock={handleBlock}
+          text={text}
         />
       </Content>
     </>

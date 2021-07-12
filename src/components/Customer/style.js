@@ -1,11 +1,5 @@
 import styled from 'styled-components'
 
-export const TableRow = styled.tr`
-  font-size: 12px;
-  font-weight: normal;
-  color: #269e97;
-`
-
 export const Container = styled.div`
   padding: 0.5rem 1rem;
   border-bottom: 1px solid #eee;
@@ -69,6 +63,15 @@ export const CustomerProfile = styled.div`
   }
 `
 
-export const Width = styled.div`
-  width: 100%;
-`
+export const customStyles = {
+  cells: {
+    style: {
+      padding: '.5rem'
+    }
+  },
+  headCells: {
+    style: {
+      color: 'var(--primary-color)'
+    }
+  }
+}

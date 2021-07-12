@@ -9,6 +9,7 @@ import CustomerDetails from '../CustomerDetails'
 import Label from '../Label/Label'
 
 import dateFormat from '../../helpers/DateFormat'
+import Filter from '../../helpers/Filter'
 
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
@@ -20,12 +21,6 @@ const CustomerInfo = (props) => {
 
   const tabs = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)
-  }
-
-  let customerAddress
-  if (data.address) {
-    const { address } = data.address
-    customerAddress = address
   }
 
   return (
@@ -80,13 +75,19 @@ const CustomerInfo = (props) => {
                   <div>
                     <div>
                       <Label>Address</Label>
-                      <p>{customerAddress}</p>
+                      <p>{data.address.address}</p>
                     </div>
                     <div>
                       <Label>Payment Method</Label>
-                      Credit Card <br />
-                      DOUGLAS SANTOS <br />
-                      XXXX XXXX XXXX 9823
+                      {data.payment_method !== null ? (
+                        <>
+                          <p>{data.payment_method.type}</p>
+                          <p>{data.payment_method.name}</p>
+                          <p>{data.payment_method.number}</p>
+                        </>
+                      ) : (
+                        <p>The payment method is pending</p>
+                      )}
                     </div>
                   </div>
                 </S.CustomerProfile>
@@ -105,14 +106,8 @@ const CustomerInfo = (props) => {
   )
 }
 
-const CustomerComponent = ({ value, loading, select, handleBlock }) => {
-  const dataFilter = value
-    ? value.filter((value) =>
-        value.status.includes(
-          `${select === 'all'.toLocaleLowerCase() ? '' : select}`
-        )
-      )
-    : value
+const CustomerComponent = ({ value, loading, select, handleBlock, text }) => {
+  const dataFilter = value ? Filter(value, select, text) : value
 
   const columns = useMemo(
     () => [
@@ -120,23 +115,28 @@ const CustomerComponent = ({ value, loading, select, handleBlock }) => {
         name: 'Customer',
         cell: (row) => <CustomerDetails Image={Image} name={row.name} />,
         minWidth: '230px',
-        wrap: false
+        selector: (row) => row['name'],
+        sortable: true
       },
       {
         name: 'email',
         selector: (row) => row['email'],
-        center: true
+        center: true,
+        sortable: true
       },
       {
         name: 'Contact',
-        cell: (row) => row['phone']
+        selector: (row) => row['phone'],
+        sortable: true
       },
       {
         name: 'Requested in',
         cell: (row) => {
           const [date] = dateFormat(row.created_at).split(' ')
           return date
-        }
+        },
+        selector: (row) => row['created_at'],
+        sortable: true
       },
       {
         name: 'Orders',
@@ -148,7 +148,7 @@ const CustomerComponent = ({ value, loading, select, handleBlock }) => {
 
   return (
     <>
-      {value && (
+      {dataFilter && (
         <DataTable
           data={dataFilter}
           progressPending={loading}
@@ -160,6 +160,7 @@ const CustomerComponent = ({ value, loading, select, handleBlock }) => {
           pagination
           paginationRowsPerPageOptions={[5, 10, 15, 20]}
           highlightOnHover
+          customStyles={S.customStyles}
         />
       )}
     </>
