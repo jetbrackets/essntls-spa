@@ -7,6 +7,8 @@ const BlockUser = async (id) => {
 
   const response = await fetch(url, options)
   const json = await response.json()
+
+  return json
 }
 
 export default BlockUser
