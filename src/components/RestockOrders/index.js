@@ -1,21 +1,20 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
+import { Line } from 'rc-progress'
 
 import * as S from './style'
 
 import ServiceProviderDetails from '../ServiceProviderDetails/'
 import Label from '../Label/Label'
 import TableItems from '../TableItems'
-
-// import dateFormat from '../../helpers/DateFormat'
+import FilterRestockOrder from '../../helpers/FilterRestockOrder'
 
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as PrintIcon } from '../../assets/icons/print.svg'
 import { ReactComponent as Options } from '../../assets/icons/kebab.svg'
+import { useState } from 'react/cjs/react.development'
 
 const RestockOrdersDetails = (props) => {
-  // const [date] = dateFormat(restockOrder.created_at).split(' ')
-
   const { data } = props
 
   return (
@@ -77,30 +76,45 @@ const RestockOrdersDetails = (props) => {
 }
 
 const RestockOrderComponent = ({ value, loading, select, text }) => {
-  const dataFilter = value
-    ? value.filter((value) =>
-        value.status.includes(
-          `${select === 'all'.toLocaleLowerCase() ? '' : select}`
-        )
-      )
-    : value
+  const dataFilter = value ? FilterRestockOrder(value, select, text) : value
 
   const columns = useMemo(
     () => [
       {
         name: 'Progress',
-        cell: (row) => <p>progress</p>
+        cell: (row) => (
+          <>
+            <Line
+              percent={
+                row.status === 'requested'
+                  ? '25'
+                  : '0' | (row.status === 'processing')
+                  ? '50'
+                  : '0' | (row.status === 'shipping')
+                  ? '75'
+                  : '0' | (row.status === 'completed')
+                  ? '100'
+                  : '0'
+              }
+              strokeWidth="7"
+              strokeColor="#269E97"
+            />
+          </>
+        )
       },
       {
         name: 'Status',
         selector: (row) => row['status'],
-        center: true
+        center: true,
+        sortable: true
       },
       {
         name: 'Order number',
         cell: (row) => <p style={{ color: '#969696' }}>#{row.id}</p>,
         editable: true,
-        wrap: false
+        wrap: false,
+        selector: (row) => row['id'],
+        sortable: true
       },
       {
         name: 'Requested in',
@@ -123,7 +137,9 @@ const RestockOrderComponent = ({ value, loading, select, text }) => {
             ''
           ),
         minWidth: '230px',
-        wrap: false
+        wrap: false,
+        selector: ({ driver }) => (driver ? driver['name'] : ''),
+        sortable: true
       },
       {
         name: 'Itens',
@@ -141,7 +157,7 @@ const RestockOrderComponent = ({ value, loading, select, text }) => {
 
   return (
     <>
-      {value && (
+      {dataFilter && (
         <DataTable
           data={dataFilter}
           progressPending={loading}
@@ -152,6 +168,7 @@ const RestockOrderComponent = ({ value, loading, select, text }) => {
           pagination
           paginationRowsPerPageOptions={[5, 10, 15, 20]}
           highlightOnHover
+          customStyles={S.customStyles}
         />
       )}
     </>

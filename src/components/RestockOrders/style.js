@@ -91,3 +91,16 @@ export const ItemsContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `
+
+export const customStyles = {
+  cells: {
+    style: {
+      padding: '.5rem'
+    }
+  },
+  headCells: {
+    style: {
+      color: 'var(--primary-color)'
+    }
+  }
+}
