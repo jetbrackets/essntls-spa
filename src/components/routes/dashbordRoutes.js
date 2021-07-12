@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom'
 import Login from '../../pages/Login/'
 import Orders from '../../pages/Orders'
 import Dashboard from '../../pages/Dashboard'
-import InventoryReport from '../../pages/InventoryReport'
 import RestockOrders from '../../pages/RestockOrders'
 import Inventory from '../../pages/Inventory'
 import Customers from '../../pages/Customers'
@@ -19,10 +18,6 @@ const DashboardRoutes = () => {
 
         <ProtectedRoute path="dashboard" element={<Dashboard />} />
         <ProtectedRoute path="orders" element={<Orders />} />
-        <ProtectedRoute
-          path="report-inventory/*"
-          element={<InventoryReport />}
-        />
         <ProtectedRoute path="restock-orders" element={<RestockOrders />} />
         <ProtectedRoute path="inventory/*" element={<Inventory />} />
         <ProtectedRoute path="customers" element={<Customers />} />

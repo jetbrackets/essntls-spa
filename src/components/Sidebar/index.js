@@ -19,9 +19,6 @@ const Sidebar = () => {
             <NavLink to="/orders">Orders</NavLink>
           </S.SidebarItem>
           <S.SidebarItem>
-            <NavLink to="/report-inventory">Inventory Report</NavLink>
-          </S.SidebarItem>
-          <S.SidebarItem>
             <NavLink to="/restock-orders">Restock Orders</NavLink>
           </S.SidebarItem>
           <S.SidebarItem>
