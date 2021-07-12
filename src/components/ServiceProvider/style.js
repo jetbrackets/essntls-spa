@@ -89,3 +89,64 @@ export const ServiceProviderProfile = styled.div`
 export const Width = styled.div`
   width: 100%;
 `
+
+export const RatingContainer = styled.div`
+  margin-top: 1rem;
+
+  h4 {
+    font-weight: normal;
+  }
+`
+
+export const ByStar = styled.div`
+  margin-top: 2rem;
+
+  > p {
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`
+
+export const DescriptionContainer = styled.div`
+  margin-top: 1rem;
+`
+
+export const HeaderReview = styled.div`
+  font-size: 14px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const ReviewDescription = styled.div`
+  font-size: 14px;
+  margin-top: 0.5rem;
+`
+
+export const ContainerStars = styled.div`
+  display: flex;
+  align-items: center;
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+`
+
+export const customStyles = {
+  cells: {
+    style: {
+      padding: '.5rem'
+    }
+  },
+  headCells: {
+    style: {
+      color: 'var(--primary-color)'
+    }
+  }
+}

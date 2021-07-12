@@ -11,6 +11,7 @@ import { useState } from 'react'
 const ServiceProviders = () => {
   const { value, loading, handleBlock, handleApprove } = useFetch(GET_DRIVERS)
   const [select, setSelect] = useState('')
+  const [text, setText] = useState('')
   const options = ['all', 'approved', 'blocked']
 
   return (
@@ -18,7 +19,11 @@ const ServiceProviders = () => {
       <PartialsDashboard />
       <Content>
         <ContentHeader title="Service Providers">
-          <FormDeliveryOptions setSelect={setSelect} options={options} />
+          <FormDeliveryOptions
+            setSelect={setSelect}
+            options={options}
+            setText={setText}
+          />
         </ContentHeader>
         <ServiceProviderComponent
           value={value}
@@ -26,6 +31,7 @@ const ServiceProviders = () => {
           select={select}
           handleApprove={handleApprove}
           handleBlock={handleBlock}
+          text={text}
         />
       </Content>
     </>

@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
-import { Nav, TabContent, TabPane, Row, Col } from 'reactstrap'
+import { Nav, TabContent, TabPane, Row, Col, Table } from 'reactstrap'
 
 import DataTable from 'react-data-table-component'
 
 import * as S from './style'
 
 import dateFormat from '../../helpers/DateFormat'
+import RenderStars from '../../helpers/RenderStars'
 
 import Label from '../Label/Label'
 import ServiceProviderDetails from '../ServiceProviderDetails'
@@ -13,6 +14,7 @@ import ServiceProviderDetails from '../ServiceProviderDetails'
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
 import { ReactComponent as ApproveButtonIcon } from '../../assets/icons/checkmark.svg'
+import Filter from '../../helpers/Filter'
 
 const ServiceProviderInfo = (props) => {
   const [activeTab, setActiveTab] = useState('1')
@@ -21,18 +23,6 @@ const ServiceProviderInfo = (props) => {
 
   const tabs = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)
-  }
-
-  let driverAddress
-  if (data.address) {
-    const { address } = data.address
-    driverAddress = address
-  }
-
-  let paymentMethod = []
-  if (data.payment_method) {
-    const { name, type, number } = data.payment_method
-    paymentMethod.push(name, type, number)
   }
 
   return (
@@ -165,17 +155,20 @@ const ServiceProviderInfo = (props) => {
                     <div>
                       <Label>Shipping Address</Label>
 
-                      <p>{driverAddress}</p>
+                      <p>{data.address.address}</p>
                     </div>
 
                     <div>
                       <Label>Payment Method</Label>
-                      {paymentMethod &&
-                        paymentMethod.map((payment, index) => (
-                          <>
-                            <p key={payment}>{payment}</p>
-                          </>
-                        ))}
+                      {data.payment_method ? (
+                        <>
+                          <p>{data.payment_method.type}</p>
+                          <p>{data.payment_method.name}</p>
+                          <p>{data.payment_method.number}</p>
+                        </>
+                      ) : (
+                        <p>The payment method is pending</p>
+                      )}
                     </div>
                   </div>
                 </S.ServiceProviderProfile>
@@ -188,14 +181,129 @@ const ServiceProviderInfo = (props) => {
               <Col sm="6">Content here</Col>
             </Row>
           </TabPane>
+          <TabPane tabId="3" className="tabPane">
+            <Row>
+              <Col sm="10 ">
+                {data.driver_orders.length !== 0 ? (
+                  <div>
+                    <Label>Address</Label>
+                    <p>
+                      {data.driver_orders.map((order) => (
+                        <section key={order.id}>
+                          <p>
+                            <span
+                              style={{ color: '#969696', fontSize: '13px' }}
+                            >
+                              Order: #{order.id} -{' '}
+                            </span>
+                            {order.delivery_address}
+                          </p>
+                          <Label>Invoice Details ($)</Label>
+                          <p>
+                            Amount: <strong>{order.amount}</strong>
+                          </p>
+                          <p>
+                            Items value: <strong>{order.items}</strong>
+                          </p>
+                          <p>
+                            Shipping: <strong>{order.shipping}</strong>
+                          </p>
+                          <p>
+                            Commission: <strong>{order.commission}</strong>
+                          </p>
+                          <p>
+                            Profit: <strong>{order.profit}</strong>
+                          </p>
+                        </section>
+                      ))}
+                    </p>
+                  </div>
+                ) : (
+                  <p>No orders yet!</p>
+                )}
+              </Col>
+            </Row>
+          </TabPane>
           <TabPane tabId="5" className="tabPane">
             <Row>
-              <Col sm="4">
-                <p>Overview</p>
-              </Col>
-              <Col sm="8">
-                <p>Reviews</p>
-              </Col>
+              {data.reviews.length !== 0 ? (
+                <>
+                  <Col sm="4">
+                    <p>Overview</p>
+                    <S.RatingContainer>
+                      <div>
+                        {data.driver_orders && (
+                          <h4>{data.driver_orders.length} Deliveries</h4>
+                        )}
+                        <h4>
+                          {data.reviews.length} Rating (
+                          {Math.floor(
+                            (data.reviews.length / data.driver_orders.length) *
+                              100
+                          )}
+                          % )
+                        </h4>
+                        <h4>Review (7%)</h4>
+                      </div>
+                      <S.ByStar>
+                        <p>Rating by Star</p>
+                        <div>
+                          <p>{RenderStars(5)}</p>
+                          <p>{RenderStars(4)}</p>
+                          <p>{RenderStars(3)}</p>
+                          <p>{RenderStars(2)}</p>
+                          <p>{RenderStars(1)}</p>
+                        </div>
+                      </S.ByStar>
+                    </S.RatingContainer>
+                  </Col>
+                  <Col sm="8">
+                    <p style={{ textAlign: 'center' }}>Reviews</p>
+                    <S.DescriptionContainer>
+                      <Table striped>
+                        <tbody>
+                          {data.reviews.map((review) => (
+                            <tr key={review.id}>
+                              {review.description !== null ? (
+                                <td>
+                                  <div>
+                                    <S.HeaderReview>
+                                      <div>
+                                        <span>
+                                          {
+                                            dateFormat(review.created_at).split(
+                                              ' '
+                                            )[0]
+                                          }
+                                        </span>
+                                        <span> - Customer Author</span>
+                                      </div>
+                                      <S.ContainerStars>
+                                        {review.note === 5 && RenderStars(5)}
+                                        {review.note === 4 && RenderStars(4)}
+                                        {review.note === 3 && RenderStars(3)}
+                                        {review.note === 2 && RenderStars(2)}
+                                        {review.note === 1 && RenderStars(1)}
+                                      </S.ContainerStars>
+                                    </S.HeaderReview>
+                                    <S.ReviewDescription>
+                                      {review.description}
+                                    </S.ReviewDescription>
+                                  </div>
+                                </td>
+                              ) : (
+                                <></>
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </S.DescriptionContainer>
+                  </Col>
+                </>
+              ) : (
+                <p>There are still no reviews for this service provider</p>
+              )}
             </Row>
           </TabPane>
         </TabContent>
@@ -209,39 +317,41 @@ const ServiceProviderComponent = ({
   loading,
   select,
   handleApprove,
-  handleBlock
+  handleBlock,
+  text
 }) => {
-  const dataFilter = value
-    ? value.filter((value) =>
-        value.status.includes(
-          `${select === 'all'.toLocaleLowerCase() ? '' : select}`
-        )
-      )
-    : value
+  const dataFilter = value ? Filter(value, select, text) : value
 
   const columns = useMemo(
     () => [
       {
         name: 'Service Provider',
-        cell: (row) => <ServiceProviderDetails image={Image} name={row.name} />,
+        cell: (row) => (
+          <ServiceProviderDetails image={Image} name={row.name} row={row} />
+        ),
         minWidth: '230px',
-        wrap: false
+        selector: (row) => row['name'],
+        sortable: true
       },
       {
         name: 'email',
         selector: (row) => row['email'],
-        center: true
+        center: true,
+        sortable: true
       },
       {
         name: 'Contact',
-        cell: (row) => row['phone']
+        selector: (row) => row['phone'],
+        sortable: true
       },
       {
         name: 'Requested in',
         cell: (row) => {
           const [date] = dateFormat(row.created_at).split(' ')
           return date
-        }
+        },
+        selector: (row) => row['created_at'],
+        sortable: true
       },
       {
         name: 'Deliveries',
@@ -257,7 +367,7 @@ const ServiceProviderComponent = ({
 
   return (
     <>
-      {value && (
+      {dataFilter && (
         <DataTable
           data={dataFilter}
           progressPending={loading}
@@ -269,6 +379,7 @@ const ServiceProviderComponent = ({
           pagination
           paginationRowsPerPageOptions={[5, 10, 15, 20]}
           highlightOnHover
+          customStyles={S.customStyles}
         />
       )}
     </>
