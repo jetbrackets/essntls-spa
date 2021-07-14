@@ -2,19 +2,13 @@ const FilterOrder = (value, select, text) => {
   return value.filter(
     (value) =>
       value.status
-        .toLocaleLowerCase()
-        .includes(`${select === 'all'.toLocaleLowerCase() ? '' : select}`) &&
-      value.customer.name
-        .toLocaleLowerCase()
-        .includes(text.toLocaleLowerCase()) |
-        value.delivery_address
-          .toLocaleLowerCase()
-          .includes(text.toLocaleLowerCase()) |
+        .toLowerCase()
+        .includes(`${select === 'all'.toLowerCase() ? '' : select}`) &&
+      value.customer.name.toLowerCase().includes(text.toLowerCase()) |
+        value.delivery_address.toLowerCase().includes(text.toLowerCase()) |
         (value.id === parseInt(text, 10)) |
         (value.driver
-          ? value.driver.name
-              .toLocaleLowerCase()
-              .includes(text.toLocaleLowerCase())
+          ? value.driver.name.toLowerCase().includes(text.toLowerCase())
           : value)
   )
 }
