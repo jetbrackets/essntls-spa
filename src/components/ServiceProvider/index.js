@@ -7,6 +7,7 @@ import * as S from './style'
 
 import dateFormat from '../../helpers/DateFormat'
 import RenderStars from '../../helpers/RenderStars'
+import Filter from '../../helpers/Filter'
 
 import Label from '../Label/Label'
 import ServiceProviderDetails from '../ServiceProviderDetails'
@@ -14,7 +15,6 @@ import ServiceProviderDetails from '../ServiceProviderDetails'
 import Image from '../../assets/images/customers-image.png'
 import { ReactComponent as BlockButtonIcon } from '../../assets/icons/block.svg'
 import { ReactComponent as ApproveButtonIcon } from '../../assets/icons/checkmark.svg'
-import Filter from '../../helpers/Filter'
 
 const ServiceProviderInfo = (props) => {
   const [activeTab, setActiveTab] = useState('1')
@@ -154,8 +154,7 @@ const ServiceProviderInfo = (props) => {
                   <div>
                     <div>
                       <Label>Shipping Address</Label>
-
-                      <p>{data.address.address}</p>
+                      {data.address !== null && <p>{data.address.address}</p>}
                     </div>
 
                     <div>
