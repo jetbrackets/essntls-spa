@@ -4,7 +4,8 @@ const ServiceProviderDetails = ({
   image,
   name,
   numberDeliveries,
-  inDashboard
+  inDashboard,
+  row
 }) => {
   return (
     <S.Wrapper inDashboard={inDashboard}>

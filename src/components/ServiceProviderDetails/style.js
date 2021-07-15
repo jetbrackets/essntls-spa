@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 
-export const Wrapper = styled.a`
+export const Wrapper = styled.div`
   width: 100%;
   display: flex;
   padding: ${(props) => (props.inDashboard === true ? '0.5rem' : '0px')};
