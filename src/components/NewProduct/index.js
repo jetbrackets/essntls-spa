@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import * as S from './style'
 
-import { ADD_PRODUCT } from '../../service/api'
+import { ADD_PRODUCT, GET_PRODUCT, EDIT_PRODUCT } from '../../service/api'
 
 import { CustomInput } from 'reactstrap'
 
@@ -17,6 +17,17 @@ const NewProduct = () => {
   const [price, setPrice] = useState('')
   const [purchasePrice, setPurchasePrice] = useState('')
 
+  const token = window.localStorage.getItem('token')
+  const param = useParams()
+
+  const { id } = param
+
+  useEffect(() => {
+    if (id) {
+      handleProduct(id)
+    }
+  }, [])
+
   const handlePreview = ({ target }) => {
     setImage({
       preview: URL.createObjectURL(target.files[0]),
@@ -26,18 +37,53 @@ const NewProduct = () => {
 
   const navigate = useNavigate()
 
-  const handleNewProduct = async (body, token) => {
-    token = window.localStorage.getItem('token')
-
+  const handleNewProduct = async (body) => {
     body = {
-      name, stock, price, purchase_price: purchasePrice, status: 1, image: null
+      name,
+      stock,
+      price,
+      purchase_price: purchasePrice,
+      status: 1,
+      image: null
     }
 
-    const {url, options} = ADD_PRODUCT(body, token)
+    const { url, options } = ADD_PRODUCT(body, token)
     const response = await fetch(url, options)
     const json = await response.json()
 
-    if(response.ok) navigate('/inventory')
+    console.log(body)
+
+    if (response.ok) navigate('/inventory')
+
+    return json
+  }
+
+  const handleProduct = async (id) => {
+    const { url, options } = GET_PRODUCT(token, id)
+    const response = await fetch(url, options)
+    const json = await response.json()
+
+    setName(json.name)
+    setStock(json.stock)
+    setPrice(json.price)
+    setPurchasePrice(json.purchase_price)
+  }
+
+  const handleUpdateProduct = async (id) => {
+    const body = {
+      name,
+      stock,
+      price,
+      purchase_price: purchasePrice,
+      status: 1,
+      image: null
+    }
+
+    const { url, options } = EDIT_PRODUCT(token, body, id)
+    const response = await fetch(url, options)
+    const json = await response.json()
+
+    if (response.ok) navigate('/inventory')
 
     return json
   }
@@ -60,16 +106,36 @@ const NewProduct = () => {
         <div>
           <form>
             <div>
-              <S.Input type="text" placeholder="Name" value={name} onChange={({target}) => setName(target.value)} />
+              <S.Input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={({ target }) => setName(target.value)}
+              />
             </div>
 
             <S.Container>
               <div>
-                <S.Input type="text" placeholder="Purchase price ($)" value={purchasePrice} onChange={({target}) => setPurchasePrice(target.value)}/>
-                <S.Input type="text" placeholder="Sell price ($)" value={price} onChange={({target}) => setPrice(target.value)}/>
+                <S.Input
+                  type="text"
+                  placeholder="Purchase price ($)"
+                  value={purchasePrice}
+                  onChange={({ target }) => setPurchasePrice(target.value)}
+                />
+                <S.Input
+                  type="text"
+                  placeholder="Sell price ($)"
+                  value={price}
+                  onChange={({ target }) => setPrice(target.value)}
+                />
               </div>
               <div>
-                <S.Input type="text" placeholder="Quantity" value={stock} onChange={({target}) => setStock(target.value)}/>
+                <S.Input
+                  type="text"
+                  placeholder="Quantity"
+                  value={stock}
+                  onChange={({ target }) => setStock(target.value)}
+                />
                 <CustomInput
                   type="checkbox"
                   id="exampleCustomCheckbox"
@@ -85,10 +151,20 @@ const NewProduct = () => {
           <CancelIcon />
           Cancel
         </S.Button>
-        <S.Button className="add-button" onClick={handleNewProduct}>
-          <CheckIcon />
-          Add
-        </S.Button>
+        {id ? (
+          <S.Button
+            className="add-button"
+            onClick={() => handleUpdateProduct(id)}
+          >
+            <CheckIcon />
+            Update
+          </S.Button>
+        ) : (
+          <S.Button className="add-button" onClick={handleNewProduct}>
+            <CheckIcon />
+            Add
+          </S.Button>
+        )}
       </S.ButtonContainer>
     </>
   )

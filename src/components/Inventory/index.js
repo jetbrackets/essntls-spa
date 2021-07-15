@@ -12,6 +12,7 @@ const InventoryComponent = () => {
         <Routes>
           <Route path="/" element={<InventoryOverview />} />
           <Route path="new/product" element={<NewProduct />} />
+          <Route path="product/:id" element={<NewProduct />} />
         </Routes>
       </S.Wrapper>
     </>

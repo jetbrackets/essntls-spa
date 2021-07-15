@@ -110,13 +110,42 @@ export const GET_PRODUCTS = (token) => {
   }
 }
 
+export const GET_PRODUCT = (token, id) => {
+  return {
+    url: `${API_URL}/admin/v1/product/edit/${id}`,
+    options: {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}
+
 export const ADD_PRODUCT = (body, token) => {
   return {
     url: API_URL + '/admin/v1/product/store',
     options: {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(body)
+    }
+  }
+}
+
+export const EDIT_PRODUCT = (token, body, id) => {
+  return {
+    url: `${API_URL}/admin/v1/product/update/${id}`,
+    options: {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token
       },

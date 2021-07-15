@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import DataTable from 'react-data-table-component'
 import Switch from 'react-switch'
 
@@ -15,8 +15,13 @@ import { ReactComponent as SumButton } from '../../assets/icons/sum.svg'
 const InventoryOverview = () => {
   const [checked, setChecked] = useState(false)
   const { value, loading } = useFetch(GET_PRODUCTS)
+  const navigate = useNavigate()
 
   const handleChange = () => setChecked(!checked)
+
+  const handleProduct = async (id) => {
+    navigate(`product/${id}`)
+  }
 
   const columns = useMemo(
     () => [
@@ -38,7 +43,7 @@ const InventoryOverview = () => {
       },
       {
         name: 'Profit ($)',
-        selector: (row) => `${row.price * row.purchase_price}`,
+        selector: (row) => `${Math.floor(row.price * row.purchase_price, -1)}`,
         sortable: true,
         center: true
       },
@@ -50,7 +55,7 @@ const InventoryOverview = () => {
       },
       {
         cell: (row) => (
-          <S.Button>
+          <S.Button onClick={() => handleProduct(row.id)}>
             <EditButton /> Edit
           </S.Button>
         ),
