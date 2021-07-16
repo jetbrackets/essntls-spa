@@ -153,3 +153,70 @@ export const EDIT_PRODUCT = (token, body, id) => {
     }
   }
 }
+
+export const GET_USERS = (token) => {
+  return {
+    url: API_URL + '/admin/v1/admins',
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}
+
+export const DELETE_USER = (token, id) => {
+  return {
+    url: `${API_URL}/admin/v1/user/admin/${id}/delete`,
+    options: {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}
+
+export const EDIT_USER = (token, body, id) => {
+  return {
+    url: `${API_URL}/admin/v1/user/admin/${id}/update`,
+    options: {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(body)
+    }
+  }
+}
+
+export const GET_USER = (token, id) => {
+  return {
+    url: `${API_URL}/admin/v1/user/admin/${id}/edit`,
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+  }
+}
+
+export const ADD_USER = (body, token) => {
+  return {
+    url: API_URL + '/admin/v1/user/store',
+    options: {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(body)
+    }
+  }
+}
