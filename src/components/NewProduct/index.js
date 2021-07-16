@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import * as S from './style'
@@ -21,12 +21,6 @@ const NewProduct = () => {
   const param = useParams()
 
   const { id } = param
-
-  useEffect(() => {
-    if (id) {
-      handleProduct(id)
-    }
-  }, [])
 
   const handlePreview = ({ target }) => {
     setImage({
@@ -51,23 +45,24 @@ const NewProduct = () => {
     const response = await fetch(url, options)
     const json = await response.json()
 
-    console.log(body)
-
     if (response.ok) navigate('/inventory')
 
     return json
   }
 
-  const handleProduct = async (id) => {
-    const { url, options } = GET_PRODUCT(token, id)
-    const response = await fetch(url, options)
-    const json = await response.json()
+  const handleProduct = useCallback(
+    async (id) => {
+      const { url, options } = GET_PRODUCT(token, id)
+      const response = await fetch(url, options)
+      const json = await response.json()
 
-    setName(json.name)
-    setStock(json.stock)
-    setPrice(json.price)
-    setPurchasePrice(json.purchase_price)
-  }
+      setName(json.name)
+      setStock(json.stock)
+      setPrice(json.price)
+      setPurchasePrice(json.purchase_price)
+    },
+    [token]
+  )
 
   const handleUpdateProduct = async (id) => {
     const body = {
@@ -89,6 +84,12 @@ const NewProduct = () => {
   }
 
   const refreshImage = () => setImage({})
+
+  useEffect(() => {
+    if (id) {
+      handleProduct(id)
+    }
+  }, [handleProduct, id])
 
   return (
     <>
