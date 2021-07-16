@@ -30,6 +30,9 @@ const Sidebar = () => {
           <S.SidebarItem>
             <NavLink to="/service-providers">Service Providers</NavLink>
           </S.SidebarItem>
+          <S.SidebarItem>
+            <NavLink to="/users">Users</NavLink>
+          </S.SidebarItem>
         </ul>
 
         <div>
