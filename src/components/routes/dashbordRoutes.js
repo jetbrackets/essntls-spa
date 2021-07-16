@@ -7,6 +7,7 @@ import RestockOrders from '../../pages/RestockOrders'
 import Inventory from '../../pages/Inventory'
 import Customers from '../../pages/Customers'
 import ServiceProviders from '../../pages/ServiceProviders'
+import Users from '../../pages/Users'
 
 import ProtectedRoute from '../../helpers/ProtectedRoute'
 
@@ -25,6 +26,7 @@ const DashboardRoutes = () => {
           path="service-providers"
           element={<ServiceProviders />}
         />
+        <ProtectedRoute path="users/*" element={<Users />} />
       </Routes>
     </div>
   )
